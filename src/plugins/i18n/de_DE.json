@@ -1,0 +1,18 @@
+{
+  "$vuetify": {},
+  "buttonUpdate": "Aktualisieren",
+  "formLabelHomeInput": "Eingabe",
+  "modalTitleUpdateAvailable": "App-Update verfügbar",
+  "modalTextUpdateAvailable": "Eine neue Version von UNICON ist verfügbar. Bitte mit dem Knopf unten aktualisieren und neu laden.",
+  "pageHomeCardTitle": "Lass uns umwandeln!",
+  "pageHomeLogoWelcome": "Willkommen zu",
+  "unitDistanceFoot": "Füße",
+  "unitDistanceMeter": "Meter",
+  "unitDistanceMile": "Meilen",
+  "unitWeightKilogram": "Kilogramm",
+  "unitWeightPound": "Pfund",
+  "unitWeightStone": "Steine",
+  "themeLight": "Tagmodus",
+  "themeDark": "Nachtmodus",
+  "themeSystem": "Automatischer Modus"
+}
