@@ -1,6 +1,8 @@
 {
   "$vuetify": {},
   "buttonUpdate": "Aktualisieren",
+  "formFeedbackNotANumber": "Keine Zahl gefunden",
+  "formFeedbackUnitMissing": "Einheit fehlt",
   "formLabelHomeInput": "Eingabe",
   "modalTitleUpdateAvailable": "App-Update verfügbar",
   "modalTextUpdateAvailable": "Eine neue Version von UNICON ist verfügbar. Bitte mit dem Knopf unten aktualisieren und neu laden.",

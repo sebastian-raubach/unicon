@@ -2,7 +2,7 @@ import { WeightUnit } from '../WeightUnit'
 
 export class Pound extends WeightUnit {
   constructor() {
-    super('unitWeightPound', ['lb'])
+    super('unitWeightPound', ['lb', 'pound', 'pounds'])
   }
 
   toSiUnit(value: number): number {

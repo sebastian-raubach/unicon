@@ -2,7 +2,7 @@
   <v-container class="fill-height">
     <v-responsive
       class="align-centerfill-height mx-auto"
-      max-width="900"
+      max-width="min(100%, 900px)"
     >
       <v-img
         class="mb-4"
@@ -38,12 +38,12 @@
                 <v-form @submit.prevent validate-on="input">
                   <v-text-field :label="t('formLabelHomeInput')" v-model="input" required :rules="[isValid]"></v-text-field>
 
-                  <template v-if="converted">
-                    <v-chip color="primary" variant="outlined" label v-for="c in converted" :key="`converted-${c.name}`" class="me-3 wrap-chip">
+                  <v-chip-group column v-if="converted">
+                    <v-chip color="primary" variant="outlined" label v-for="c in converted" :key="`converted-${c.name}`" class="wrap-chip">
                       <h4>{{ t(c.name) }}</h4>
                       <p>{{ n(c.value) }}</p>
                     </v-chip>
-                  </template>
+                  </v-chip-group>
                 </v-form>
               </div>
             </template>
@@ -56,8 +56,6 @@
 
 <script setup lang="ts">
 import { Unit } from '@/plugins/conversion/Unit'
-import { WeightUnit } from '@/plugins/conversion/WeightUnit'
-import { DistanceUnit } from '@/plugins/conversion/DistanceUnit'
 
 import { Pound } from '@/plugins/conversion/weight/Pound'
 import { Stone } from '@/plugins/conversion/weight/Stone'
@@ -71,10 +69,8 @@ import { ref, computed } from 'vue'
 import { useLocale } from 'vuetify'
 const { t, n } = useLocale()
 
-const unitTypes: Array<any> = [WeightUnit, DistanceUnit]
-
 const mapping = new Map<string, Unit>()
-let w: WeightUnit = new Pound()
+let w: Unit = new Pound()
 w.abbreviations.forEach(ab => mapping.set(ab, w))
 w = new Stone()
 w.abbreviations.forEach(ab => mapping.set(ab, w))
@@ -102,10 +98,10 @@ function isValid (value?: string): boolean | string {
     const [first, ...second] = value.split(' ')
 
     if (!isNumeric(first)) {
-      return 'Not a number'
+      return t('formFeedbackNotANumber')
     }
     if (second.length < 1 || second[0].length < 1) {
-      return 'Unit missing'
+      return t('formFeedbackUnitMissing')
     }
   }
 
@@ -117,25 +113,20 @@ const converted = computed(() => {
     const [first, ...second]: string[] = input.value.split(' ')
 
     if (isNumeric(first) && second.length > 0 && second[0].length > 0) {
-      const match = mapping.get(second[0].trim())
+      const match = mapping.get(second[0].trim().toLowerCase())
 
       if (match) {
         const si = match.toSiUnit(+first)
 
         const result: any[] = []
 
-        unitTypes.forEach(T => {
-          console.log(T, match instanceof T)
-          if (match instanceof T) {
-            const others = [...new Set(Array.from(mapping.values()).filter((u: Unit) => u instanceof T))]
+        const others = [...new Set(Array.from(mapping.values()).filter((u: Unit) => u.type === match.type))]
 
-            others.forEach(o => {
-              result.push({
-                name: o.name,
-                value: o.fromSiUnit(si)
-              })
-            })
-          }
+        others.forEach(o => {
+          result.push({
+            name: o.name,
+            value: o.fromSiUnit(si)
+          })
         })
 
         return result

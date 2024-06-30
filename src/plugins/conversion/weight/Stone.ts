@@ -2,7 +2,7 @@ import { WeightUnit } from '../WeightUnit'
 
 export class Stone extends WeightUnit {
   constructor() {
-    super('unitWeightStone', ['st'])
+    super('unitWeightStone', ['st', 'stone', 'stones'])
   }
 
   toSiUnit(value: number): number {

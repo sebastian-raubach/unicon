@@ -1,6 +1,8 @@
 {
   "$vuetify": {},
   "buttonUpdate": "Update",
+  "formFeedbackNotANumber": "Not a number",
+  "formFeedbackUnitMissing": "Unit missing",
   "formLabelHomeInput": "Input",
   "modalTitleUpdateAvailable": "App update available",
   "modalTextUpdateAvailable": "An updated version of UNICON is available. Please use the button below to load the new content and refresh the page.",

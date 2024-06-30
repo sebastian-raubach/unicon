@@ -2,7 +2,7 @@ import { WeightUnit } from '../WeightUnit'
 
 export class Kilogram extends WeightUnit {
   constructor() {
-    super('unitWeightKilogram', ['kg'])
+    super('unitWeightKilogram', ['kg', 'kilogram', 'kilograms'])
   }
 
   toSiUnit(value: number): number {
