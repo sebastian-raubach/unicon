@@ -62,7 +62,14 @@ import { Stone } from '@/plugins/conversion/weight/Stone'
 import { Kilogram } from '@/plugins/conversion/weight/Kilogram'
 import { Meter } from '@/plugins/conversion/distance/Meter'
 import { Foot } from '@/plugins/conversion/distance/Foot'
+import { Yard } from '@/plugins/conversion/distance/Yard'
 import { Mile } from '@/plugins/conversion/distance/Mile'
+import { Liter } from '@/plugins/conversion/volume/Liter'
+import { CubicMeter } from '@/plugins/conversion/volume/CubicMeter'
+import { GallonUk } from '@/plugins/conversion/volume/GallonUk'
+import { GallonUs } from '@/plugins/conversion/volume/GallonUs'
+import { PintUk } from '@/plugins/conversion/volume/PintUk'
+import { PintUs } from '@/plugins/conversion/volume/PintUs'
 
 import { ref, computed } from 'vue'
 
@@ -80,7 +87,21 @@ w = new Meter()
 w.abbreviations.forEach(ab => mapping.set(ab, w))
 w = new Foot()
 w.abbreviations.forEach(ab => mapping.set(ab, w))
+w = new Yard()
+w.abbreviations.forEach(ab => mapping.set(ab, w))
 w = new Mile()
+w.abbreviations.forEach(ab => mapping.set(ab, w))
+w = new Liter()
+w.abbreviations.forEach(ab => mapping.set(ab, w))
+w = new CubicMeter()
+w.abbreviations.forEach(ab => mapping.set(ab, w))
+w = new GallonUk()
+w.abbreviations.forEach(ab => mapping.set(ab, w))
+w = new GallonUs()
+w.abbreviations.forEach(ab => mapping.set(ab, w))
+w = new PintUk()
+w.abbreviations.forEach(ab => mapping.set(ab, w))
+w = new PintUs()
 w.abbreviations.forEach(ab => mapping.set(ab, w))
 
 const input = ref<string>()
@@ -113,7 +134,7 @@ const converted = computed(() => {
     const [first, ...second]: string[] = input.value.split(' ')
 
     if (isNumeric(first) && second.length > 0 && second[0].length > 0) {
-      const match = mapping.get(second[0].trim().toLowerCase())
+      const match = mapping.get(second.map(s => s.trim()).join(' ').toLowerCase())
 
       if (match) {
         const si = match.toSiUnit(+first)

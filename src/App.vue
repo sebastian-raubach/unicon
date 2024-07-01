@@ -3,6 +3,10 @@
     <v-app-bar color="background" :elevation="0">
       <v-spacer></v-spacer>
 
+      <v-btn icon @click="showInfo = true">
+        <v-icon>mdi-information-outline</v-icon>
+      </v-btn>
+
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn icon v-bind="props">
@@ -59,6 +63,24 @@
       </v-card>
     </v-dialog>
 
+    <v-dialog v-model="showInfo" width="auto">
+      <v-card
+        max-width="400"
+        prepend-icon="mdi-information-outline"
+        :title="t('modalTitleInformation')" >
+        <v-card-text>
+          <div v-html="t('modalTextInformation')" />
+        </v-card-text>
+        <template v-slot:actions>
+          <v-btn
+            class="ms-auto"
+            :text="t('buttonClose')"
+            @click="showInfo = false"
+          ></v-btn>
+        </template>
+      </v-card>
+    </v-dialog>
+
     <v-main>
       <Dashboard />
     </v-main>
@@ -76,6 +98,7 @@ const store = coreStore()
 
 const registration = ref(function () { console.log('dummy SW callback') })
 const updateExists = ref(false)
+const showInfo = ref(false)
 
 // Listen to SW updates
 document.addEventListener('swUpdated', (event: any) => {
