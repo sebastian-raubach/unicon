@@ -2,7 +2,7 @@ import { VolumeUnit } from '../VolumeUnit'
 
 export class Liter extends VolumeUnit {
   constructor() {
-    super('unitVolumeLiter', ['l', 'liter', 'litre', 'litres', 'liters'])
+    super('unitVolumeLiter', 'l', ['l', 'liter', 'litre', 'litres', 'liters'])
   }
 
   toSiUnit(value: number): number {

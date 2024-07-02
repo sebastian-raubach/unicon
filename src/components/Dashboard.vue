@@ -38,12 +38,23 @@
                 <v-form @submit.prevent validate-on="input">
                   <v-text-field :label="t('formLabelHomeInput')" v-model="input" required :rules="[isValid]"></v-text-field>
 
-                  <v-chip-group column v-if="converted">
-                    <v-chip color="primary" variant="outlined" label v-for="c in converted" :key="`converted-${c.name}`" class="wrap-chip">
+                  <div class="d-flex flex-wrap" v-if="converted && converted.converted && converted.conversions && converted.conversions.length > 0">
+                    <v-chip color="primary" variant="outlined" label v-for="c in converted.conversions" :key="`converted-${c.name}`" class="wrap-chip me-2">
                       <h4>{{ t(c.name) }}</h4>
                       <p>{{ n(c.value) }}</p>
                     </v-chip>
-                  </v-chip-group>
+                  </div>
+                  <div class="d-flex flex-wrap" v-else-if="converted && !converted.converted && converted.duplicateMatches && converted.duplicateMatches.length > 0">
+                    <v-chip :color="colors.yellow.darken2"
+                            variant="outlined"
+                            label
+                            v-for="c in converted.duplicateMatches"
+                            :key="`converted-duplicates-${c.name}`"
+                            class="wrap-chip me-2"
+                            @click="setInput(c)">
+                      <h4>{{ t(c.name) }}</h4>
+                    </v-chip>
+                  </div>
                 </v-form>
               </div>
             </template>
@@ -71,40 +82,48 @@ import { GallonUs } from '@/plugins/conversion/volume/GallonUs'
 import { PintUk } from '@/plugins/conversion/volume/PintUk'
 import { PintUs } from '@/plugins/conversion/volume/PintUs'
 
+import colors from 'vuetify/util/colors'
+
 import { ref, computed } from 'vue'
 
 import { useLocale } from 'vuetify'
 const { t, n } = useLocale()
 
-const mapping = new Map<string, Unit>()
-let w: Unit = new Pound()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
-w = new Stone()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
-w = new Kilogram()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
-w = new Meter()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
-w = new Foot()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
-w = new Yard()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
-w = new Mile()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
-w = new Liter()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
-w = new CubicMeter()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
-w = new GallonUk()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
-w = new GallonUs()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
-w = new PintUk()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
-w = new PintUs()
-w.abbreviations.forEach(ab => mapping.set(ab, w))
+const mapping = new Map<string, Unit[]>()
+const units: Unit[] = []
+function addToMapping (unit: Unit): void {
+  units.push(unit)
+  unit.abbreviations.forEach(ab => {
+    const lower = ab.toLowerCase()
+    if (mapping.has(lower)) {
+      mapping.get(lower)?.push(unit)
+    } else {
+      mapping.set(lower, [unit])
+    }
+  })
+}
+
+addToMapping(new Pound())
+addToMapping(new Stone())
+addToMapping(new Kilogram())
+addToMapping(new Meter())
+addToMapping(new Foot())
+addToMapping(new Yard())
+addToMapping(new Mile())
+addToMapping(new Liter())
+addToMapping(new CubicMeter())
+addToMapping(new GallonUk())
+addToMapping(new GallonUs())
+addToMapping(new PintUk())
+addToMapping(new PintUs())
 
 const input = ref<string>()
+
+function setInput (unit: Unit): void {
+  const [first, ...second] = input.value.split(' ')
+
+  input.value = `${first} ${unit.primaryAbbreviation}`
+}
 
 function isNumeric (value?: string | number): boolean {
   return ((value != null) &&
@@ -134,23 +153,35 @@ const converted = computed(() => {
     const [first, ...second]: string[] = input.value.split(' ')
 
     if (isNumeric(first) && second.length > 0 && second[0].length > 0) {
-      const match = mapping.get(second.map(s => s.trim()).join(' ').toLowerCase())
+      const match: Unit[] | undefined = mapping.get(second.map(s => s.trim()).join(' ').toLowerCase())
 
-      if (match) {
-        const si = match.toSiUnit(+first)
+      if (match && match.length > 0) {
+        if (match.length > 1) {
+          return {
+            converted: false,
+            duplicateMatches: match,
+            conversions: []
+          }
+        } else {
+          const si = match[0].toSiUnit(+first)
 
-        const result: any[] = []
+          const result: any[] = []
 
-        const others = [...new Set(Array.from(mapping.values()).filter((u: Unit) => u.type === match.type))]
+          const others = units.filter((u: Unit) => u.type === match[0].type)
 
-        others.forEach(o => {
-          result.push({
-            name: o.name,
-            value: o.fromSiUnit(si)
+          others.forEach(o => {
+            result.push({
+              name: o.name,
+              value: o.fromSiUnit(si)
+            })
           })
-        })
 
-        return result
+          return {
+            converted: true,
+            duplicateMatches: [],
+            conversions: result
+          }
+        }
       } else {
         return null
       }

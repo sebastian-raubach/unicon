@@ -17,9 +17,9 @@
           <v-list-item
             @click="store.setLocale(language.locale)"
             v-for="language in languages"
-            :key="`locale-${language.flag}`"
+            :key="`locale-${language.locale}`"
             :value="language.locale">
-            <v-list-item-title>{{ language.name }}</v-list-item-title>
+            <v-list-item-title><span class="me-2">{{ language.flag }}</span> <span>{{ language.name }}</span></v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -109,11 +109,11 @@ document.addEventListener('swUpdated', (event: any) => {
 
 const languages = [{
   locale: 'en',
-  flag: 'gb',
+  flag: '🇬🇧',
   name: 'British English'
 }, {
   locale: 'de',
-  flag: 'de',
+  flag: '🇩🇪',
   name: 'Deutsch - Deutschland'
 }]
 
