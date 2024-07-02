@@ -120,9 +120,11 @@ addToMapping(new PintUs())
 const input = ref<string>()
 
 function setInput (unit: Unit): void {
-  const [first, ...second] = input.value.split(' ')
+  if (input.value) {
+    const split = input.value.split(' ')
 
-  input.value = `${first} ${unit.primaryAbbreviation}`
+    input.value = `${split[0]} ${unit.primaryAbbreviation}`
+  }
 }
 
 function isNumeric (value?: string | number): boolean {
