@@ -2,7 +2,7 @@ import { DistanceUnit } from '../DistanceUnit'
 
 export class Foot extends DistanceUnit {
   constructor() {
-    super('unitDistanceFoot', 'ft', ['ft', 'foot', 'feet'])
+    super('unitDistanceFoot', 'ft', ['ft', 'foot', 'feet', 'fuß', 'füße'])
   }
 
   toSiUnit(value: number): number {

@@ -10,5 +10,6 @@ declare module 'vue' {
     Dashboard: typeof import('./src/components/Dashboard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TimezoneMap: typeof import('./src/components/TimezoneMap.vue')['default']
   }
 }

@@ -22,7 +22,7 @@ export default defineConfig({
     VitePWA({
       workbox: {
         cleanupOutdatedCaches: true,
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,geojson,vue,txt,woff2}'],
         maximumFileSizeToCacheInBytes: 30000000
       },
       filename: 'service-worker.js',
@@ -64,6 +64,7 @@ export default defineConfig({
     extensions: [
       '.js',
       '.json',
+      '.geojson',
       '.jsx',
       '.mjs',
       '.ts',

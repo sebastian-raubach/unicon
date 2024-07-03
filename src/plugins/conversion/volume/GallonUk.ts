@@ -2,7 +2,7 @@ import { VolumeUnit } from '../VolumeUnit'
 
 export class GallonUk extends VolumeUnit {
   constructor() {
-    super('unitVolumeGallonUk', 'gal UK', ['gal', 'gal UK', 'gal (UK)', 'gallon', 'gallons'])
+    super('unitVolumeGallonUk', 'gal UK', ['gal', 'gal UK', 'gal (UK)', 'gallon', 'gallons', 'gallone', 'gallonen'])
   }
 
   toSiUnit(value: number): number {

@@ -36,25 +36,28 @@
             <template #subtitle>
               <div class="text-subtitle-1">
                 <v-form @submit.prevent validate-on="input">
-                  <v-text-field :label="t('formLabelHomeInput')" v-model="input" required :rules="[isValid]"></v-text-field>
+                  <v-text-field :label="t('formLabelHomeInput')" :placeholder="$t('formPlaceholderHomeInput')" v-model="input" required :rules="[isValid]"></v-text-field>
 
-                  <div class="d-flex flex-wrap" v-if="converted && converted.converted && converted.conversions && converted.conversions.length > 0">
-                    <v-chip color="primary" variant="outlined" label v-for="c in converted.conversions" :key="`converted-${c.name}`" class="wrap-chip me-2">
-                      <h4>{{ t(c.name) }}</h4>
-                      <p>{{ n(c.value) }}</p>
-                    </v-chip>
-                  </div>
-                  <div class="d-flex flex-wrap" v-else-if="converted && !converted.converted && converted.duplicateMatches && converted.duplicateMatches.length > 0">
-                    <v-chip :color="colors.yellow.darken2"
-                            variant="outlined"
-                            label
-                            v-for="c in converted.duplicateMatches"
-                            :key="`converted-duplicates-${c.name}`"
-                            class="wrap-chip me-2"
-                            @click="setInput(c)">
-                      <h4>{{ t(c.name) }}</h4>
-                    </v-chip>
-                  </div>
+                  <template v-if="conversionStatus">
+                    <TimezoneMap :dateConfig="conversionStatus.dateConfig" class="mt-3" v-if="conversionStatus.dateConfig" />
+                    <div class="d-flex flex-wrap" v-else-if="conversionStatus.converted && conversionStatus.conversions && conversionStatus.conversions.length > 0">
+                      <v-chip color="primary" variant="outlined" label v-for="c in conversionStatus.conversions" :key="`converted-${c.name}`" class="wrap-chip me-2 me-2 mb-2">
+                        <h4>{{ t(c.name) }}</h4>
+                        <p>{{ n(c.value) }}</p>
+                      </v-chip>
+                    </div>
+                    <div class="d-flex flex-wrap" v-else-if="!conversionStatus.converted && conversionStatus.duplicateMatches && conversionStatus.duplicateMatches.length > 0">
+                      <v-chip :color="colors.yellow.darken2"
+                              variant="outlined"
+                              label
+                              v-for="c in conversionStatus.duplicateMatches"
+                              :key="`converted-duplicates-${c.name}`"
+                              class="wrap-chip me-2 mb-2"
+                              @click="setInput(c)">
+                        <h4>{{ t(c.name) }}</h4>
+                      </v-chip>
+                    </div>
+                  </template>
                 </v-form>
               </div>
             </template>
@@ -70,6 +73,7 @@ import { Unit } from '@/plugins/conversion/Unit'
 
 import { Pound } from '@/plugins/conversion/weight/Pound'
 import { Stone } from '@/plugins/conversion/weight/Stone'
+import { Gram } from '@/plugins/conversion/weight/Gram'
 import { Kilogram } from '@/plugins/conversion/weight/Kilogram'
 import { Meter } from '@/plugins/conversion/distance/Meter'
 import { Foot } from '@/plugins/conversion/distance/Foot'
@@ -81,6 +85,15 @@ import { GallonUk } from '@/plugins/conversion/volume/GallonUk'
 import { GallonUs } from '@/plugins/conversion/volume/GallonUs'
 import { PintUk } from '@/plugins/conversion/volume/PintUk'
 import { PintUs } from '@/plugins/conversion/volume/PintUs'
+import { Celsius } from '@/plugins/conversion/temperature/Celsius'
+import { Fahrenheit } from '@/plugins/conversion/temperature/Fahrenheit'
+import { Kelvin } from '@/plugins/conversion/temperature/Kelvin'
+import { Second } from '@/plugins/conversion/time/Second'
+import { Minute } from '@/plugins/conversion/time/Minute'
+import { Hour } from '@/plugins/conversion/time/Hour'
+import { Day } from '@/plugins/conversion/time/Day'
+
+import TimezoneMap from '@/components/TimezoneMap.vue'
 
 import colors from 'vuetify/util/colors'
 
@@ -89,9 +102,15 @@ import { ref, computed } from 'vue'
 import { useLocale } from 'vuetify'
 const { t, n } = useLocale()
 
+// Keep a mapping of unit abbreviations/synonyms to possible Unit object matches
 const mapping = new Map<string, Unit[]>()
+// Keep track of all Units used
 const units: Unit[] = []
-function addToMapping (unit: Unit): void {
+/**
+ * Adds the given unit to the unit mapping for retrieval and unit list
+ * @param unit The Unit object to add to the mapping and unit list
+ */
+function addUnit (unit: Unit): void {
   units.push(unit)
   unit.abbreviations.forEach(ab => {
     const lower = ab.toLowerCase()
@@ -103,22 +122,35 @@ function addToMapping (unit: Unit): void {
   })
 }
 
-addToMapping(new Pound())
-addToMapping(new Stone())
-addToMapping(new Kilogram())
-addToMapping(new Meter())
-addToMapping(new Foot())
-addToMapping(new Yard())
-addToMapping(new Mile())
-addToMapping(new Liter())
-addToMapping(new CubicMeter())
-addToMapping(new GallonUk())
-addToMapping(new GallonUs())
-addToMapping(new PintUk())
-addToMapping(new PintUs())
+addUnit(new Pound())
+addUnit(new Stone())
+addUnit(new Gram())
+addUnit(new Kilogram())
+addUnit(new Meter())
+addUnit(new Foot())
+addUnit(new Yard())
+addUnit(new Mile())
+addUnit(new Liter())
+addUnit(new CubicMeter())
+addUnit(new GallonUk())
+addUnit(new GallonUs())
+addUnit(new PintUk())
+addUnit(new PintUs())
+addUnit(new Celsius())
+addUnit(new Fahrenheit())
+addUnit(new Kelvin())
+addUnit(new Second())
+addUnit(new Minute())
+addUnit(new Hour())
+addUnit(new Day())
 
+/** The user input */
 const input = ref<string>()
 
+/**
+ * Sets the input to the given Unit. This is used for ambiguous abbreviations. Current numeric value is maintained.
+ * @param unit The Unit object to set as the input unit. Will keep current input value.
+ */
 function setInput (unit: Unit): void {
   if (input.value) {
     const split = input.value.split(' ')
@@ -127,18 +159,32 @@ function setInput (unit: Unit): void {
   }
 }
 
+/**
+ * Checks whether the given number or string is actually a numeric value
+ * @param value The value to check. Can be number or string
+ * @returns boolean indicating whether this is a number or not
+ */
 function isNumeric (value?: string | number): boolean {
   return ((value != null) &&
            (value !== '') &&
            !isNaN(Number(value.toString())))
 }
 
+/**
+ * Checks whether the given input is of the correct format. Needs to have a least one space and split on spaces, the first
+ * part has to be a number.
+ * @param value The input string to check
+ * @returns Either boolean or string. If boolean, then the input is valid, if string it's the string key for i18n.
+ */
 function isValid (value?: string): boolean | string {
   if (value === undefined || value === null || value.length < 1) {
     return ''
   } else {
     const [first, ...second] = value.split(' ')
 
+    if (first.includes(':')) {
+      return true
+    }
     if (!isNumeric(first)) {
       return t('formFeedbackNotANumber')
     }
@@ -150,17 +196,35 @@ function isValid (value?: string): boolean | string {
   return true
 }
 
-const converted = computed(() => {
+const conversionStatus = computed(() => {
   if (input.value !== undefined && input.value !== null && input.value.length > 0) {
     const [first, ...second]: string[] = input.value.split(' ')
 
-    if (isNumeric(first) && second.length > 0 && second[0].length > 0) {
+    if (first.includes(':') || (second.length > 0 && (second[0] === 'am' || second[0] === 'pm'))) {
+      let [hour, minute] = first.split(':').map(Number)
+
+      if (second[0] === 'pm') {
+        hour += 12
+      }
+
+      return {
+        dateConfig: {
+          hour: hour,
+          minute: minute || 0,
+          tz: 'Europe/London'
+        },
+        converted: false,
+        duplicateMatches: [],
+        conversions: []
+      }
+    } else if (isNumeric(first) && second.length > 0 && second[0].length > 0) {
       const match: Unit[] | undefined = mapping.get(second.map(s => s.trim()).join(' ').toLowerCase())
 
       if (match && match.length > 0) {
         if (match.length > 1) {
           return {
             converted: false,
+            dateConfig: null,
             duplicateMatches: match,
             conversions: []
           }
@@ -180,6 +244,7 @@ const converted = computed(() => {
 
           return {
             converted: true,
+            dateConfig: null,
             duplicateMatches: [],
             conversions: result
           }

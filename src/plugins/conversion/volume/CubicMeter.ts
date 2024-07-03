@@ -2,7 +2,7 @@ import { VolumeUnit } from '../VolumeUnit'
 
 export class CubicMeter extends VolumeUnit {
   constructor() {
-    super('unitVolumeCubicMeter', 'm3', ['m3', 'cubic meter', 'cubic meters', 'cubic metre', 'cubic metres'])
+    super('unitVolumeCubicMeter', 'm3', ['m3', 'cubic meter', 'cubic meters', 'cubic metre', 'cubic metres', 'kubikmeter'])
   }
 
   toSiUnit(value: number): number {
