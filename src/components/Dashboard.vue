@@ -74,6 +74,7 @@
 <script setup lang="ts">
 import { Unit } from '@/plugins/conversion/Unit'
 
+import { Ounce } from '@/plugins/conversion/weight/Ounce'
 import { Pound } from '@/plugins/conversion/weight/Pound'
 import { Stone } from '@/plugins/conversion/weight/Stone'
 import { Gram } from '@/plugins/conversion/weight/Gram'
@@ -81,6 +82,7 @@ import { Kilogram } from '@/plugins/conversion/weight/Kilogram'
 import { Centimeter } from '@/plugins/conversion/distance/Centimeter'
 import { Meter } from '@/plugins/conversion/distance/Meter'
 import { Kilometer } from '@/plugins/conversion/distance/Kilometer'
+import { Parsec } from '@/plugins/conversion/distance/Parsec'
 import { Foot } from '@/plugins/conversion/distance/Foot'
 import { Inch } from '@/plugins/conversion/distance/Inch'
 import { Yard } from '@/plugins/conversion/distance/Yard'
@@ -106,6 +108,7 @@ import colors from 'vuetify/util/colors'
 import { ref, computed } from 'vue'
 
 import { useLocale } from 'vuetify'
+
 const { t, n } = useLocale()
 
 // Keep a mapping of unit abbreviations/synonyms to possible Unit object matches
@@ -128,6 +131,7 @@ function addUnit (unit: Unit): void {
   })
 }
 
+addUnit(new Ounce())
 addUnit(new Pound())
 addUnit(new Stone())
 addUnit(new Gram())
@@ -135,6 +139,7 @@ addUnit(new Kilogram())
 addUnit(new Centimeter())
 addUnit(new Meter())
 addUnit(new Kilometer())
+addUnit(new Parsec())
 addUnit(new Inch())
 addUnit(new Foot())
 addUnit(new Yard())

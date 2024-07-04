@@ -16,6 +16,7 @@
   "unitDistanceCentimeter": "Centimetres",
   "unitDistanceMeter": "Metres",
   "unitDistanceKilometer": "Kilometres",
+  "unitDistanceParsec": "Parsecs",
   "unitDistanceInch": "Inches",
   "unitDistanceMile": "Miles",
   "unitDistanceYard": "Yards",
@@ -36,6 +37,7 @@
   "unitWeightKilogram": "Kilograms",
   "unitWeightPound": "Pounds",
   "unitWeightStone": "Stones",
+  "unitWeightOunce": "Ounces",
   "themeLight": "Light mode",
   "themeDark": "Dark mode",
   "themeSystem": "Automatic mode"
