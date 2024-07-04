@@ -7,9 +7,9 @@ export class Centimeter extends DistanceUnit {
   }
 
   toSiUnit(value: number): number {
-    return value / 1000
+    return value / 100
   }
   fromSiUnit(value: number): ConversionResult[] {
-    return this.adjustSubUnits(value, value * 1000)
+    return this.adjustSubUnits(value, value * 100)
   }
 }
