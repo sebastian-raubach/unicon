@@ -1,3 +1,4 @@
+import { ConversionResult } from '../ConversionResult'
 import { VolumeUnit } from '../VolumeUnit'
 
 export class GallonUk extends VolumeUnit {
@@ -8,7 +9,7 @@ export class GallonUk extends VolumeUnit {
   toSiUnit(value: number): number {
     return value / 219.9692482991
   }
-  fromSiUnit(value: number): number {
-    return value * 219.9692482991
+  fromSiUnit(value: number): ConversionResult[] {
+    return this.adjustSubUnits(value, value * 219.9692482991)
   }
 }

@@ -1,7 +1,7 @@
 import { Unit } from './Unit'
 
 export abstract class DistanceUnit extends Unit {
-  constructor(name: string, primaryAbbreviation: string, abbreviations: string[]) {
-    super(name, primaryAbbreviation, abbreviations, 'distance')
+  constructor(name: string, primaryAbbreviation: string, abbreviations: string[], subUnit?: Unit) {
+    super(name, primaryAbbreviation, abbreviations, 'distance', subUnit)
   }
 }

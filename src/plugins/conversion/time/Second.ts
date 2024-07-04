@@ -1,3 +1,4 @@
+import { ConversionResult } from '../ConversionResult'
 import { TimeUnit } from '../TimeUnit'
 
 export class Second extends TimeUnit {
@@ -8,7 +9,7 @@ export class Second extends TimeUnit {
   toSiUnit(value: number): number {
     return value
   }
-  fromSiUnit(value: number): number {
-    return value
+  fromSiUnit(value: number): ConversionResult[] {
+    return this.adjustSubUnits(value, value)
   }
 }

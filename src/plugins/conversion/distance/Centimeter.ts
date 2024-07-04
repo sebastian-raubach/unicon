@@ -1,9 +1,9 @@
 import { ConversionResult } from '../ConversionResult'
-import { WeightUnit } from '../WeightUnit'
+import { DistanceUnit } from '../DistanceUnit'
 
-export class Gram extends WeightUnit {
+export class Centimeter extends DistanceUnit {
   constructor() {
-    super('unitWeightGram', 'g', ['g', 'gram', 'grams', 'gramm'])
+    super('unitDistanceCentimeter', 'cm', ['cm', 'centimeter', 'centimetre', 'centimeters', 'centimetres', 'zentimeter'])
   }
 
   toSiUnit(value: number): number {

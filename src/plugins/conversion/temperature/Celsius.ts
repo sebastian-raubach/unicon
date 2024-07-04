@@ -1,3 +1,4 @@
+import { ConversionResult } from '../ConversionResult'
 import { TemperatureUnit } from '../TemperatureUnit'
 
 export class Celsius extends TemperatureUnit {
@@ -8,7 +9,7 @@ export class Celsius extends TemperatureUnit {
   toSiUnit(value: number): number {
     return value + 273.15
   }
-  fromSiUnit(value: number): number {
-    return value - 273.15
+  fromSiUnit(value: number): ConversionResult[] {
+    return this.adjustSubUnits(value, value - 273.15)
   }
 }

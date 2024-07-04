@@ -40,19 +40,22 @@
 
                   <template v-if="conversionStatus">
                     <TimezoneMap :dateConfig="conversionStatus.dateConfig" class="mt-3" v-if="conversionStatus.dateConfig" />
-                    <div class="d-flex flex-wrap" v-else-if="conversionStatus.converted && conversionStatus.conversions && conversionStatus.conversions.length > 0">
-                      <v-chip color="primary" variant="outlined" label v-for="c in conversionStatus.conversions" :key="`converted-${c.name}`" class="wrap-chip me-2 me-2 mb-2">
-                        <h4>{{ t(c.name) }}</h4>
-                        <p>{{ n(c.value) }}</p>
+                    <div class="d-flex flex-wrap conversion-gap" v-else-if="conversionStatus.converted && conversionStatus.conversions && conversionStatus.conversions.length > 0">
+                      <v-chip color="primary" label v-for="c in conversionStatus.conversions" :key="`converted-${c.name}`" class="wrap-chip">
+                        <div class="d-flex flex-wrap conversion-gap">
+                          <div v-for="sub in c.value" :key="`converted-sub-${c.name}-${sub.unitName}`">
+                            <h4>{{ t(sub.unitName) }}</h4>
+                            <p>{{ n(sub.conversionValue) }}</p>
+                          </div>
+                        </div>
                       </v-chip>
                     </div>
-                    <div class="d-flex flex-wrap" v-else-if="!conversionStatus.converted && conversionStatus.duplicateMatches && conversionStatus.duplicateMatches.length > 0">
+                    <div class="d-flex flex-wrap conversion-gap" v-else-if="!conversionStatus.converted && conversionStatus.duplicateMatches && conversionStatus.duplicateMatches.length > 0">
                       <v-chip :color="colors.yellow.darken2"
-                              variant="outlined"
                               label
                               v-for="c in conversionStatus.duplicateMatches"
                               :key="`converted-duplicates-${c.name}`"
-                              class="wrap-chip me-2 mb-2"
+                              class="wrap-chip"
                               @click="setInput(c)">
                         <h4>{{ t(c.name) }}</h4>
                       </v-chip>
@@ -75,8 +78,11 @@ import { Pound } from '@/plugins/conversion/weight/Pound'
 import { Stone } from '@/plugins/conversion/weight/Stone'
 import { Gram } from '@/plugins/conversion/weight/Gram'
 import { Kilogram } from '@/plugins/conversion/weight/Kilogram'
+import { Centimeter } from '@/plugins/conversion/distance/Centimeter'
 import { Meter } from '@/plugins/conversion/distance/Meter'
+import { Kilometer } from '@/plugins/conversion/distance/Kilometer'
 import { Foot } from '@/plugins/conversion/distance/Foot'
+import { Inch } from '@/plugins/conversion/distance/Inch'
 import { Yard } from '@/plugins/conversion/distance/Yard'
 import { Mile } from '@/plugins/conversion/distance/Mile'
 import { Liter } from '@/plugins/conversion/volume/Liter'
@@ -126,7 +132,10 @@ addUnit(new Pound())
 addUnit(new Stone())
 addUnit(new Gram())
 addUnit(new Kilogram())
+addUnit(new Centimeter())
 addUnit(new Meter())
+addUnit(new Kilometer())
+addUnit(new Inch())
 addUnit(new Foot())
 addUnit(new Yard())
 addUnit(new Mile())
@@ -274,6 +283,9 @@ const conversionStatus = computed(() => {
   -o-transform: scale(-1, -1);
   -ms-transform: scale(-1, -1);
   transform: scale(-1, -1);
+}
+.conversion-gap {
+  gap: 8px;
 }
 </style>
 

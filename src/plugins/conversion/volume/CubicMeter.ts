@@ -1,3 +1,4 @@
+import { ConversionResult } from '../ConversionResult'
 import { VolumeUnit } from '../VolumeUnit'
 
 export class CubicMeter extends VolumeUnit {
@@ -8,7 +9,7 @@ export class CubicMeter extends VolumeUnit {
   toSiUnit(value: number): number {
     return value
   }
-  fromSiUnit(value: number): number {
-    return value
+  fromSiUnit(value: number): ConversionResult[] {
+    return this.adjustSubUnits(value, value)
   }
 }
