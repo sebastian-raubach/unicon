@@ -40,7 +40,7 @@
                 <v-form @submit.prevent validate-on="input">
                   <v-text-field :label="t('formLabelHomeInput')"
                                 :placeholder="$t('formPlaceholderHomeInput')"
-                                :append-inner-icon="isValid(input) === true ? mdiShare : null"
+                                :append-inner-icon="isValid(input) === true ? mdiShare : undefined"
                                 @click:append-inner="shareInput"
                                 v-model="input"
                                 required
