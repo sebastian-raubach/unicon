@@ -16,7 +16,7 @@ export class PotentialPart {
   findUnit (possibleUnits: Unit[]): Unit | undefined {
     if (this.unit.length > 0) {
       const lower = this.unit.trim().toLowerCase()
-      return possibleUnits.find(u => u.abbreviations.some(a => a === lower))
+      return possibleUnits.find(u => u.abbreviations.some(a => a.toLocaleLowerCase() === lower))
     } else {
       return undefined
     }

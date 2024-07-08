@@ -277,6 +277,8 @@ const conversionStatus = computed(() => {
       }
     } else {
       const potentialParts = getPotentialParts(parts)
+      
+      console.log(potentialParts)
 
       let totalSi = 0
       let type: string = ''
