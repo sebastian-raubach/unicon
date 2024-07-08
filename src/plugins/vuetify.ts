@@ -5,7 +5,6 @@
  */
 
 // Styles
-import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n'
 
@@ -14,6 +13,7 @@ import deDE from '@/plugins/i18n/de_DE.json'
 
 // Composables
 import { createVuetify } from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
 import { createI18n, useI18n } from 'vue-i18n'
 import { en, de } from 'vuetify/locale'
@@ -34,6 +34,13 @@ const i18n = createI18n({
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 const vuetify = createVuetify({
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi
+    }
+  },
   theme: {
     defaultTheme: 'dark',
     themes: {

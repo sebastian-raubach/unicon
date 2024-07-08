@@ -4,6 +4,8 @@
   "buttonUpdate": "Update",
   "formFeedbackNotANumber": "Not a number",
   "formFeedbackUnitMissing": "Unit missing",
+  "formFeedbackInvalidUnitDefinition": "Invalid or missing unit",
+  "formFeedbackIncompatibleUnitTypes": "Incompatible unit types",
   "formLabelHomeInput": "Input",
   "formPlaceholderHomeInput": "e.g. 1 kg or 3 feet or 4 pints",
   "modalTitleUpdateAvailable": "App update available",

@@ -4,6 +4,8 @@
   "buttonUpdate": "Aktualisieren",
   "formFeedbackNotANumber": "Keine Zahl gefunden",
   "formFeedbackUnitMissing": "Einheit fehlt",
+  "formFeedbackInvalidUnitDefinition": "Ungültige oder fehlende Einheit",
+  "formFeedbackIncompatibleUnitTypes": "Inkompatible Einheitstypen",
   "formLabelHomeInput": "Eingabe",
   "formPlaceholderHomeInput": "z.B. 1 kg or 3 meter or 4 liter",
   "modalTitleUpdateAvailable": "App-Update verfügbar",

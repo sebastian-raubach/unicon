@@ -24,10 +24,12 @@
           <v-card
             class="py-4"
             color="surface-variant"
-            prepend-icon="mdi-arrow-decision"
             rounded="lg"
             variant="outlined"
           >
+            <template v-slot:prepend>
+              <v-icon>{{ mdiArrowDecision }}</v-icon>
+            </template>
 
             <template #title>
               <h2 class="text-h5 font-weight-bold">{{ t('pageHomeCardTitle') }}</h2>
@@ -108,6 +110,8 @@ import colors from 'vuetify/util/colors'
 import { ref, computed } from 'vue'
 
 import { useLocale } from 'vuetify'
+import { mdiArrowDecision } from '@mdi/js'
+import { PotentialPart } from '@/plugins/PotentialPart'
 
 const { t, n } = useLocale()
 
@@ -184,6 +188,30 @@ function isNumeric (value?: string | number): boolean {
            !isNaN(Number(value.toString())))
 }
 
+function getPotentialParts (parts: string[]): PotentialPart[] {
+  const result: PotentialPart[] = []
+
+  let value: number | null = null
+  let unit: string[] = []
+  for (let i = 0; i < parts.length; i++) {
+    if (isNumeric(parts[i])) {
+      if (value !== null) {
+        result.push(new PotentialPart(value, unit.join(' ')))
+      }
+      value = +parts[i]
+      unit = []
+    } else if (value !== null) {
+      unit.push(parts[i])
+    }
+  }
+
+  if (value !== null) {
+    result.push(new PotentialPart(value, unit.join(' ')))
+  }
+
+  return result
+}
+
 /**
  * Checks whether the given input is of the correct format. Needs to have a least one space and split on spaces, the first
  * part has to be a number.
@@ -194,16 +222,28 @@ function isValid (value?: string): boolean | string {
   if (value === undefined || value === null || value.length < 1) {
     return ''
   } else {
-    const [first, ...second] = value.split(' ')
+    const parts: string[] = value.split(' ')
 
-    if (first.includes(':')) {
+    if (parts[0].includes(':')) {
       return true
     }
-    if (!isNumeric(first)) {
-      return t('formFeedbackNotANumber')
-    }
-    if (second.length < 1 || second[0].length < 1) {
-      return t('formFeedbackUnitMissing')
+    
+    const possibleParts: PotentialPart[] = getPotentialParts(parts)
+
+    if (possibleParts.length < 1) {
+      return t('formFeedbackNoValidUnitsFound')
+    } else {
+      const usedUnits: Unit[] = possibleParts.map(pp => pp.findUnit(units)).filter((u): u is Unit => !!u)
+
+      const types: Set<string> = new Set(usedUnits.map(u => u.type))
+
+      if (types.size > 1) {
+        return t('formFeedbackIncompatibleUnitTypes')
+      }
+
+      if (possibleParts.some(pp => !pp.isValid(units))) {
+        return t('formFeedbackInvalidUnitDefinition')
+      }
     }
   }
 
@@ -211,13 +251,17 @@ function isValid (value?: string): boolean | string {
 }
 
 const conversionStatus = computed(() => {
+  if (isValid(input.value) !== true) {
+    return null
+  }
+
   if (input.value !== undefined && input.value !== null && input.value.length > 0) {
-    const [first, ...second]: string[] = input.value.split(' ')
+    const parts: string[] = input.value.split(' ')
 
-    if (first.includes(':') || (second.length > 0 && (second[0] === 'am' || second[0] === 'pm'))) {
-      let [hour, minute] = first.split(':').map(Number)
+    if (parts.length > 0 && (parts[0].includes(':') || (parts.length > 1 && (parts[1] === 'am' || parts[1] === 'pm')))) {
+      let [hour, minute] = parts[0].split(':').map(Number)
 
-      if (second[0] === 'pm') {
+      if (parts[1] === 'pm') {
         hour += 12
       }
 
@@ -231,43 +275,48 @@ const conversionStatus = computed(() => {
         duplicateMatches: [],
         conversions: []
       }
-    } else if (isNumeric(first) && second.length > 0 && second[0].length > 0) {
-      const match: Unit[] | undefined = mapping.get(second.map(s => s.trim()).join(' ').toLowerCase())
+    } else {
+      const potentialParts = getPotentialParts(parts)
 
-      if (match && match.length > 0) {
-        if (match.length > 1) {
-          return {
-            converted: false,
-            dateConfig: null,
-            duplicateMatches: match,
-            conversions: []
+      let totalSi = 0
+      let type: string = ''
+      for (let i = 0; i < potentialParts.length; i++) {
+        const match: Unit[] | undefined = mapping.get(potentialParts[i].unit.toLowerCase())
+
+        if (match && match.length > 0) {
+          if (i === 0 && match.length > 1) {
+            return {
+              converted: false,
+              dateConfig: null,
+              duplicateMatches: match,
+              conversions: []
+            }
+          } else {
+            totalSi += match[0].toSiUnit(potentialParts[i].value)
+            type = match[0].type
           }
         } else {
-          const si = match[0].toSiUnit(+first)
-
-          const result: any[] = []
-
-          const others = units.filter((u: Unit) => u.type === match[0].type)
-
-          others.forEach(o => {
-            result.push({
-              name: o.name,
-              value: o.fromSiUnit(si)
-            })
-          })
-
-          return {
-            converted: true,
-            dateConfig: null,
-            duplicateMatches: [],
-            conversions: result
-          }
+          return null
         }
-      } else {
-        return null
       }
-    } else {
-      return null
+
+      const result: any[] = []
+
+      const others = units.filter((u: Unit) => u.type === type)
+
+      others.forEach(o => {
+        result.push({
+          name: o.name,
+          value: o.fromSiUnit(totalSi)
+        })
+      })
+
+      return {
+        converted: true,
+        dateConfig: null,
+        duplicateMatches: [],
+        conversions: result
+      }
     }
   } else {
     return null

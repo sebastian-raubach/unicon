@@ -4,13 +4,13 @@
       <v-spacer></v-spacer>
 
       <v-btn icon @click="showInfo = true">
-        <v-icon>mdi-information-outline</v-icon>
+        <v-icon>{{ mdiInformationOutline }}</v-icon>
       </v-btn>
 
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn icon v-bind="props">
-            <v-icon>mdi-translate</v-icon>
+            <v-icon>{{ mdiTranslate }}</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -27,21 +27,27 @@
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn icon v-bind="props">
-            <v-icon>mdi-theme-light-dark</v-icon>
+            <v-icon>{{ mdiThemeLightDark }}</v-icon>
           </v-btn>
         </template>
         <v-list>
-          <v-list-item
-            v-for="(item, index) in items"
-            :key="index"
-            :value="index"
-            :active="item.value === store.theme"
-            @click="store.setTheme(item.value)"
-          >
+          <v-list-item @click="store.setTheme('light')" :active="store.theme === 'light'">
             <template v-slot:prepend>
-              <v-icon :icon="item.icon"></v-icon>
+              <v-icon>{{ mdiWhiteBalanceSunny }}</v-icon>
             </template>
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
+            <v-list-item-title>{{ t('themeLight') }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="store.setTheme('dark')" :active="store.theme === 'dark'">
+            <template v-slot:prepend>
+              <v-icon>{{ mdiWeatherNight }}</v-icon>
+            </template>
+            <v-list-item-title>{{ t('themeDark') }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="store.setTheme('system')" :active="store.theme === 'system'">
+            <template v-slot:prepend>
+              <v-icon>{{ mdiDesktopTowerMonitor }}</v-icon>
+            </template>
+            <v-list-item-title>{{ t('themeSystem') }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -50,9 +56,11 @@
     <v-dialog v-model="updateExists" width="auto">
       <v-card
         max-width="400"
-        prepend-icon="mdi-update"
         :text="t('modalTextUpdateAvailable')"
         :title="t('modalTitleUpdateAvailable')" >
+        <template v-slot:prepend>
+          <v-icon>{{ mdiUpdate }}</v-icon>
+        </template>
         <template v-slot:actions>
           <v-btn
             class="ms-auto"
@@ -66,8 +74,10 @@
     <v-dialog v-model="showInfo" width="auto">
       <v-card
         max-width="400"
-        prepend-icon="mdi-information-outline"
         :title="t('modalTitleInformation')" >
+        <template v-slot:prepend>
+          <v-icon>{{ mdiInformationOutline }}</v-icon>
+        </template>
         <v-card-text>
           <div v-html="t('modalTextInformation')" />
         </v-card-text>
@@ -89,7 +99,9 @@
 
 <script setup lang="ts">
 import { coreStore } from '@/store'
-import { watch, ref, watchEffect, computed } from 'vue'
+import { watch, ref, watchEffect } from 'vue'
+
+import { mdiInformationOutline, mdiDesktopTowerMonitor, mdiWhiteBalanceSunny, mdiWeatherNight, mdiUpdate, mdiThemeLightDark, mdiTranslate } from '@mdi/js'
 
 import { useLocale, useTheme } from 'vuetify'
 const { current, t } = useLocale()
@@ -116,26 +128,6 @@ const languages = [{
   flag: '🇩🇪',
   name: 'Deutsch - Deutschland'
 }]
-
-const items = computed(() => {
-  return [
-    {
-      text: t('themeLight'),
-      icon: 'mdi-white-balance-sunny',
-      value: 'light',
-    },
-    {
-      text: t('themeDark'),
-      icon: 'mdi-weather-night',
-      value: 'dark',
-    },
-    {
-      text: t('themeSystem'),
-      icon: 'mdi-desktop-tower-monitor',
-      value: 'system',
-    },
-  ]
-})
 
 const systemTheme = ref('dark')
 
