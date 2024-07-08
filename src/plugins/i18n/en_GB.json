@@ -12,6 +12,8 @@
   "modalTextUpdateAvailable": "An updated version of UNICON is available. Please use the button below to load the new content and refresh the page.",
   "modalTitleInformation": "Information",
   "modalTextInformation": "UNICON is designed, developed and maintained by <a href='https://github.com/sebastian-raubach'>Sebastian Raubach</a>. Please get in touch with any questions, suggestions and feedback on the <a href='https://github.com/sebastian-raubach/unicon'>GitHub repository</a>.",
+  "modalTitleShare": "Share",
+  "modalTextShare": "Share this input with anyone by sending this link to them.",
   "pageHomeCardTitle": "Let's convert!",
   "pageHomeLogoWelcome": "Welcome to",
   "unitDistanceFoot": "Feet",

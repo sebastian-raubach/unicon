@@ -38,7 +38,14 @@
             <template #subtitle>
               <div class="text-subtitle-1">
                 <v-form @submit.prevent validate-on="input">
-                  <v-text-field :label="t('formLabelHomeInput')" :placeholder="$t('formPlaceholderHomeInput')" v-model="input" required :rules="[isValid]"></v-text-field>
+                  <v-text-field :label="t('formLabelHomeInput')"
+                                :placeholder="$t('formPlaceholderHomeInput')"
+                                :append-inner-icon="isValid(input) === true ? mdiShare : null"
+                                @click:append-inner="shareInput"
+                                v-model="input"
+                                required
+                                :rules="[isValid]">
+                  </v-text-field>
 
                   <template v-if="conversionStatus">
                     <TimezoneMap :dateConfig="conversionStatus.dateConfig" class="mt-3" v-if="conversionStatus.dateConfig" />
@@ -70,6 +77,28 @@
         </v-col>
       </v-row>
     </v-responsive>
+
+    <v-dialog v-model="showShare">
+      <v-card
+        :title="t('modalTitleShare')" >
+        <template v-slot:prepend>
+          <v-icon>{{ mdiShare }}</v-icon>
+        </template>
+        <v-card-text>
+          <div>{{ t('modalTextShare') }}</div>
+
+          <v-text-field v-model="shareValue" readonly @focus="$event.target.select()" />
+        </v-card-text>
+
+        <template v-slot:actions>
+          <v-btn
+            class="ms-auto"
+            :text="t('buttonClose')"
+            @click="showShare = false"
+          ></v-btn>
+        </template>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -110,7 +139,7 @@ import colors from 'vuetify/util/colors'
 import { ref, computed } from 'vue'
 
 import { useLocale } from 'vuetify'
-import { mdiArrowDecision } from '@mdi/js'
+import { mdiArrowDecision, mdiShare } from '@mdi/js'
 import { PotentialPart } from '@/plugins/PotentialPart'
 
 const { t, n } = useLocale()
@@ -162,8 +191,19 @@ addUnit(new Minute())
 addUnit(new Hour())
 addUnit(new Day())
 
+let urlParams = new URLSearchParams(window.location.search)
+
 /** The user input */
 const input = ref<string>()
+
+const shareValue = ref<string>()
+const showShare = ref<boolean>(false)
+
+if (urlParams.has('query')) {
+  input.value = urlParams.get('query') as string
+}
+
+window.history.replaceState(null, '', window.location.pathname);
 
 /**
  * Sets the input to the given Unit. This is used for ambiguous abbreviations. Current numeric value is maintained.
@@ -174,6 +214,24 @@ function setInput (unit: Unit): void {
     const split = input.value.split(' ')
 
     input.value = `${split[0]} ${unit.primaryAbbreviation}`
+  }
+}
+
+async function shareInput (): Promise<void> {
+  if (input.value) {
+    const url = new URL(window.location.href)
+    url.searchParams.append('query', input.value)
+
+    try {
+      await navigator.share({
+        title: 'UNICON',
+        text: 'Convert anything to anything with UNICON',
+        url: url.href,
+      })
+    } catch (err) {
+      shareValue.value = url.href
+      showShare.value = true
+    }
   }
 }
 
@@ -278,8 +336,6 @@ const conversionStatus = computed(() => {
     } else {
       const potentialParts = getPotentialParts(parts)
       
-      console.log(potentialParts)
-
       let totalSi = 0
       let type: string = ''
       for (let i = 0; i < potentialParts.length; i++) {

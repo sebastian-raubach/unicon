@@ -12,6 +12,8 @@
   "modalTextUpdateAvailable": "Eine neue Version von UNICON ist verfügbar. Bitte mit dem Knopf unten aktualisieren und neu laden.",
   "modalTitleInformation": "Information",
   "modalTextInformation": "UNICON wurde entworfen, entwickelt und wird gewartet von <a href='https://github.com/sebastian-raubach'>Sebastian Raubach</a>. Fragen, Vorschläge oder Rückmeldungen bitte über das <a href='https://github.com/sebastian-raubach/unicon'>GitHub Repository</a> schicken.",
+  "modalTitleShare": "Teilen",
+  "modalTextShare": "Teile diese Eingabe mit jemandem durch Sendes dieses Links.",
   "pageHomeCardTitle": "Lass uns umwandeln!",
   "pageHomeLogoWelcome": "Willkommen zu",
   "unitDistanceFoot": "Füße",
