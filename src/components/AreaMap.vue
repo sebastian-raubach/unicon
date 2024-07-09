@@ -7,14 +7,13 @@ import { coreStore } from '@/store'
 const store = coreStore()
 
 import { ref, onMounted, watch, watchEffect, defineProps } from 'vue'
-import L, { Layer, TileLayer, Rectangle, Circle, LatLng, Map } from 'leaflet'
+import L, { TileLayer, Rectangle, Circle, LatLng, Map } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useTheme, useLocale } from 'vuetify'
+import { useTheme } from 'vuetify'
 
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
-import { Unit } from '@/plugins/conversion/Unit'
 
 // Set the leaflet marker icon
 // @ts-ignore
@@ -33,7 +32,6 @@ const props = defineProps<{
 }>()
 
 const theme = useTheme()
-const { current } = useLocale()
 const primary = theme.current.value.colors.primary
 const mapElement = ref('')
 let themeLayer: TileLayer

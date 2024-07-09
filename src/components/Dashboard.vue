@@ -48,7 +48,7 @@
                   </v-text-field>
 
                   <template v-if="conversionStatus">
-                    <UseGeolocation v-slot="{ error, coords: { latitude, longitude } }" v-if="conversionStatus.dataType === 'area'">
+                    <UseGeolocation v-slot="{ error, coords: { latitude, longitude } }" v-if="conversionStatus.dataType === 'area' && conversionStatus.totalSi">
                       <AreaMap :latitude="latitude" :longitude="longitude" :error="error" :squareMeters="conversionStatus.totalSi" class="mb-4" />
                     </UseGeolocation>
                     <TimezoneMap :dateConfig="conversionStatus.dateConfig" class="mt-3" v-if="conversionStatus.dateConfig" />
