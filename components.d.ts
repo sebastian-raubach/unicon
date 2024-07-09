@@ -7,6 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AreaMap: typeof import('./src/components/AreaMap.vue')['default']
+    copy: typeof import('./src/components/TimezoneMap copy.vue')['default']
     Dashboard: typeof import('./src/components/Dashboard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

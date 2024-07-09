@@ -48,6 +48,9 @@
                   </v-text-field>
 
                   <template v-if="conversionStatus">
+                    <UseGeolocation v-slot="{ error, coords: { latitude, longitude } }" v-if="conversionStatus.dataType === 'area'">
+                      <AreaMap :latitude="latitude" :longitude="longitude" :error="error" :squareMeters="conversionStatus.totalSi" class="mb-4" />
+                    </UseGeolocation>
                     <TimezoneMap :dateConfig="conversionStatus.dateConfig" class="mt-3" v-if="conversionStatus.dateConfig" />
                     <div class="d-flex flex-wrap conversion-gap" v-else-if="conversionStatus.converted && conversionStatus.conversions && conversionStatus.conversions.length > 0">
                       <v-chip color="primary" label v-for="c in conversionStatus.conversions" :key="`converted-${c.name}`" class="wrap-chip">
@@ -104,35 +107,48 @@
 
 <script setup lang="ts">
 import { Unit } from '@/plugins/conversion/Unit'
+import { UseGeolocation } from '@vueuse/components'
 
-import { Ounce } from '@/plugins/conversion/weight/Ounce'
-import { Pound } from '@/plugins/conversion/weight/Pound'
-import { Stone } from '@/plugins/conversion/weight/Stone'
-import { Gram } from '@/plugins/conversion/weight/Gram'
-import { Kilogram } from '@/plugins/conversion/weight/Kilogram'
-import { Centimeter } from '@/plugins/conversion/distance/Centimeter'
-import { Meter } from '@/plugins/conversion/distance/Meter'
-import { Kilometer } from '@/plugins/conversion/distance/Kilometer'
-import { Parsec } from '@/plugins/conversion/distance/Parsec'
-import { Foot } from '@/plugins/conversion/distance/Foot'
-import { Inch } from '@/plugins/conversion/distance/Inch'
-import { Yard } from '@/plugins/conversion/distance/Yard'
-import { Mile } from '@/plugins/conversion/distance/Mile'
-import { Liter } from '@/plugins/conversion/volume/Liter'
-import { CubicMeter } from '@/plugins/conversion/volume/CubicMeter'
-import { GallonUk } from '@/plugins/conversion/volume/GallonUk'
-import { GallonUs } from '@/plugins/conversion/volume/GallonUs'
-import { PintUk } from '@/plugins/conversion/volume/PintUk'
-import { PintUs } from '@/plugins/conversion/volume/PintUs'
-import { Celsius } from '@/plugins/conversion/temperature/Celsius'
-import { Fahrenheit } from '@/plugins/conversion/temperature/Fahrenheit'
-import { Kelvin } from '@/plugins/conversion/temperature/Kelvin'
-import { Second } from '@/plugins/conversion/time/Second'
-import { Minute } from '@/plugins/conversion/time/Minute'
-import { Hour } from '@/plugins/conversion/time/Hour'
-import { Day } from '@/plugins/conversion/time/Day'
+import {
+  Ounce,
+  Pound,
+  Stone,
+  Gram,
+  Kilogram,
+  Centimeter,
+  Meter,
+  Kilometer,
+  Parsec,
+  Foot,
+  Inch,
+  Yard,
+  Mile,
+  Liter,
+  CubicMeter,
+  GallonUk,
+  GallonUs,
+  PintUk,
+  PintUs,
+  Celsius,
+  Fahrenheit,
+  Kelvin,
+  Second,
+  Minute,
+  Hour,
+  Day,
+  Hectare,
+  SquareMeter,
+  Acre,
+  SquareKilometer,
+  SquareMile,
+  SquareYard,
+  SquareFoot,
+  SquareInch,
+  SquareCentimeter
+} from '@/plugins/conversion'
 
 import TimezoneMap from '@/components/TimezoneMap.vue'
+import AreaMap from '@/components/AreaMap.vue'
 
 import colors from 'vuetify/util/colors'
 
@@ -190,6 +206,15 @@ addUnit(new Second())
 addUnit(new Minute())
 addUnit(new Hour())
 addUnit(new Day())
+addUnit(new Hectare())
+addUnit(new SquareMeter())
+addUnit(new Acre())
+addUnit(new SquareKilometer())
+addUnit(new SquareCentimeter())
+addUnit(new SquareMile())
+addUnit(new SquareYard())
+addUnit(new SquareFoot())
+addUnit(new SquareInch())
 
 let urlParams = new URLSearchParams(window.location.search)
 
@@ -228,6 +253,7 @@ async function shareInput (): Promise<void> {
         text: 'Convert anything to anything with UNICON',
         url: url.href,
       })
+      return
     } catch (err) {
       shareValue.value = url.href
       showShare.value = true
@@ -316,6 +342,8 @@ const conversionStatus = computed(() => {
   if (input.value !== undefined && input.value !== null && input.value.length > 0) {
     const parts: string[] = input.value.split(' ')
 
+    let dataType: string = ''
+
     if (parts.length > 0 && (parts[0].includes(':') || (parts.length > 1 && (parts[1] === 'am' || parts[1] === 'pm')))) {
       let [hour, minute] = parts[0].split(':').map(Number)
 
@@ -331,13 +359,14 @@ const conversionStatus = computed(() => {
         },
         converted: false,
         duplicateMatches: [],
-        conversions: []
+        conversions: [],
+        dataType: 'timezone',
+        totalSi: null
       }
     } else {
       const potentialParts = getPotentialParts(parts)
       
       let totalSi = 0
-      let type: string = ''
       for (let i = 0; i < potentialParts.length; i++) {
         const match: Unit[] | undefined = mapping.get(potentialParts[i].unit.toLowerCase())
 
@@ -347,11 +376,13 @@ const conversionStatus = computed(() => {
               converted: false,
               dateConfig: null,
               duplicateMatches: match,
-              conversions: []
+              conversions: [],
+              dataType: null,
+              totalSi: null
             }
           } else {
             totalSi += match[0].toSiUnit(potentialParts[i].value)
-            type = match[0].type
+            dataType = match[0].type
           }
         } else {
           return null
@@ -360,7 +391,7 @@ const conversionStatus = computed(() => {
 
       const result: any[] = []
 
-      const others = units.filter((u: Unit) => u.type === type)
+      const others = units.filter((u: Unit) => u.type === dataType)
 
       others.forEach(o => {
         result.push({
@@ -373,7 +404,9 @@ const conversionStatus = computed(() => {
         converted: true,
         dateConfig: null,
         duplicateMatches: [],
-        conversions: result
+        conversions: result,
+        dataType: dataType,
+        totalSi: totalSi
       }
     }
   } else {
