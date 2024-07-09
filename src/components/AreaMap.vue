@@ -63,12 +63,6 @@ function initMap () {
   rectangle.addTo(map)
   map.fitBounds(bounds, { padding: [50, 50] })
 
-  const baseMaps = {
-    'Theme-based': themeLayer,
-  }
-
-  L.control.layers(baseMaps).addTo(map)
-
   // Disable zoom until focus gained, disable when blur
   map.scrollWheelZoom.disable()
   map.on('focus', () => map.scrollWheelZoom.enable())

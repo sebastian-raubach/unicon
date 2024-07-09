@@ -108,12 +108,6 @@ function initMap () {
   geoJsonLayer.addTo(map)
   map.fitBounds(geoJsonLayer.getBounds())
 
-  const baseMaps = {
-    'Theme-based': themeLayer,
-  }
-
-  L.control.layers(baseMaps).addTo(map)
-
   // Disable zoom until focus gained, disable when blur
   map.scrollWheelZoom.disable()
   map.on('focus', () => map.scrollWheelZoom.enable())
