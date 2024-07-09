@@ -3,7 +3,7 @@ import { AreaUnit } from '../AreaUnit'
 
 export class SquareCentimeter extends AreaUnit {
   constructor() {
-    super('unitAreaSquareCentimeter', 'cm2', ['cm2', 'square centimeter', 'square centimeters', 'square centimetre', 'square centimetres', 'quadratzentimeter'])
+    super('unitAreaSquareCentimeter', 'cm2', ['cm2', 'square cm', 'square centimeter', 'square centimeters', 'square centimetre', 'square centimetres', 'quadratzentimeter'])
   }
 
   toSiUnit(value: number): number {

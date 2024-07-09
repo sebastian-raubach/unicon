@@ -4,7 +4,7 @@ import { SquareYard } from './SquareYard'
 
 export class SquareMile extends AreaUnit {
   constructor() {
-    super('unitAreaSquareMile', 'mi2', ['mi2', 'square mile', 'square miles', 'quadratmeile', 'quadratmeilen'], new SquareYard())
+    super('unitAreaSquareMile', 'mi2', ['mi2', 'square mi', 'square mile', 'square miles', 'quadratmeile', 'quadratmeilen'], new SquareYard())
   }
 
   toSiUnit(value: number): number {

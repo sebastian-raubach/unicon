@@ -27,12 +27,8 @@
             rounded="lg"
             variant="outlined"
           >
-            <template v-slot:prepend>
-              <v-icon>{{ mdiArrowDecision }}</v-icon>
-            </template>
-
             <template #title>
-              <h2 class="text-h5 font-weight-bold">{{ t('pageHomeCardTitle') }}</h2>
+              <h2 class="text-h5 mb-3 font-weight-bold"><v-icon>{{ mdiArrowDecision }}</v-icon> {{ t('pageHomeCardTitle') }}</h2>
             </template>
 
             <template #subtitle>

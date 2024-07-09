@@ -5,7 +5,7 @@ import { SiUnit } from '../SiUnit'
 
 export class SquareMeter extends AreaUnit implements SiUnit {
   constructor() {
-    super('unitAreaSquareMeter', 'm2', ['m2', 'square meter', 'square meters', 'square metre', 'square metres', 'quadratmeter'], new SquareCentimeter())
+    super('unitAreaSquareMeter', 'm2', ['m2', 'square m', 'square meter', 'square meters', 'square metre', 'square metres', 'quadratmeter'], new SquareCentimeter())
   }
 
   toSiUnit(value: number): number {

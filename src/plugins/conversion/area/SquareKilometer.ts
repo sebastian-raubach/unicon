@@ -4,7 +4,7 @@ import { SquareMeter } from './SquareMeter'
 
 export class SquareKilometer extends AreaUnit {
   constructor() {
-    super('unitAreaSquareKilometer', 'km2', ['km2', 'square kilometer', 'square kilometers', 'square kilometre', 'square kilometres', 'quadratkilometer'], new SquareMeter())
+    super('unitAreaSquareKilometer', 'km2', ['km2', 'square km', 'square kilometer', 'square kilometers', 'square kilometre', 'square kilometres', 'quadratkilometer'], new SquareMeter())
   }
 
   toSiUnit(value: number): number {
