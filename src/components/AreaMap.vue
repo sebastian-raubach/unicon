@@ -6,7 +6,7 @@
 import { coreStore } from '@/store'
 const store = coreStore()
 
-import { ref, onMounted, watch, watchEffect, defineProps } from 'vue'
+import { ref, onMounted, watch, watchEffect } from 'vue'
 import L, { TileLayer, Rectangle, Circle, LatLng, Map } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useTheme } from 'vuetify'
@@ -31,14 +31,19 @@ const props = defineProps<{
   squareMeters: number
 }>()
 
-const theme = useTheme()
-const primary = theme.current.value.colors.primary
+// Refs
 const mapElement = ref('')
+const systemTheme = ref('dark')
+
+// Composition stuff
+const theme = useTheme()
+
+const primary = theme.current.value.colors.primary
+
 let themeLayer: TileLayer
 let rectangle: Rectangle
 let circle: Circle
 let map: Map
-const systemTheme = ref('dark')
 let media: MediaQueryList
 
 function initMap () {
@@ -84,21 +89,28 @@ function onThemeChange () {
 watchEffect(() => {
   const theme = store.theme === 'system' ? systemTheme.value : store.theme
 
+  // Update the tile layer
   if (themeLayer && themeLayer) {
     themeLayer.setUrl(`//services.arcgisonline.com/arcgis/rest/services/Canvas/${theme === 'dark' ? 'World_Dark_Gray_Base' : 'World_Light_Gray_Base'}/MapServer/tile/{z}/{y}/{x}`)
   }
 })
 
 function updateRectangle () {
+  // Calculate the dimensions of the square by using an invisible circle
   const radius = Math.sqrt(props.squareMeters) / 2
   if (props.latitude !== undefined && props.latitude !== null && props.longitude !== undefined && props.longitude !== null) {
+    // Update center
     circle.setLatLng(new LatLng(props.latitude, props.longitude))
   }
+  // Set radius
   circle.setRadius(radius)
   const bounds = circle.getBounds()
+  // Update rect to same bounds
   rectangle.setBounds(bounds)
+  // Update map view
   map.fitBounds(bounds, { padding: [50, 50] })
 }
+// If any prop changes, update the rectangle
 watch(() => props, () => {
   updateRectangle()
 }, { deep: true })

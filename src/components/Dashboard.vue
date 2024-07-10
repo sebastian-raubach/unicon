@@ -94,6 +94,7 @@
 import { Unit } from '@/plugins/conversion/Unit'
 import { UseGeolocation } from '@vueuse/components'
 
+// Import ALL the units
 import {
   Ounce,
   Pound,
@@ -134,15 +135,13 @@ import {
 
 import TimezoneMap from '@/components/TimezoneMap.vue'
 import AreaMap from '@/components/AreaMap.vue'
-
 import colors from 'vuetify/util/colors'
-
 import { ref, computed } from 'vue'
-
 import { useLocale } from 'vuetify'
 import { mdiArrowDecision, mdiShare } from '@mdi/js'
 import { PotentialPart } from '@/plugins/PotentialPart'
 
+// Composition stuff
 const { t, n } = useLocale()
 
 // Keep a mapping of unit abbreviations/synonyms to possible Unit object matches
@@ -165,6 +164,7 @@ function addUnit (unit: Unit): void {
   })
 }
 
+// Add all the units
 addUnit(new Ounce())
 addUnit(new Pound())
 addUnit(new Stone())
@@ -201,18 +201,17 @@ addUnit(new SquareYard())
 addUnit(new SquareFoot())
 addUnit(new SquareInch())
 
-let urlParams = new URLSearchParams(window.location.search)
-
-/** The user input */
+// Refs
 const input = ref<string>()
-
 const shareValue = ref<string>()
 const showShare = ref<boolean>(false)
 
+// Read URL input if available
+let urlParams = new URLSearchParams(window.location.search)
 if (urlParams.has('query')) {
   input.value = urlParams.get('query') as string
 }
-
+// Remove any parameters
 window.history.replaceState(null, '', window.location.pathname);
 
 /**
@@ -227,6 +226,7 @@ function setInput (unit: Unit): void {
   }
 }
 
+/** Use Share API to share the input */
 async function shareInput (): Promise<void> {
   if (input.value) {
     const url = new URL(window.location.href)

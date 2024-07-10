@@ -100,17 +100,19 @@
 <script setup lang="ts">
 import { coreStore } from '@/store'
 import { watch, ref, watchEffect } from 'vue'
-
 import { mdiInformationOutline, mdiDesktopTowerMonitor, mdiWhiteBalanceSunny, mdiWeatherNight, mdiUpdate, mdiThemeLightDark, mdiTranslate } from '@mdi/js'
-
 import { useLocale, useTheme } from 'vuetify'
+
+// Composition stuff
 const { current, t } = useLocale()
 const theme = useTheme()
 const store = coreStore()
 
+// Refs
 const registration = ref(function () { console.log('dummy SW callback') })
 const updateExists = ref(false)
 const showInfo = ref(false)
+const systemTheme = ref('dark')
 
 // Listen to SW updates
 document.addEventListener('swUpdated', (event: any) => {
@@ -129,22 +131,23 @@ const languages = [{
   name: 'Deutsch - Deutschland'
 }]
 
-const systemTheme = ref('dark')
-
+// Listen for theme changes in the store
 let media: MediaQueryList
-
 watch(() => store.theme, (value: string) => {
   if (value === 'system') {
+    // If currently system, get prefered scheme and listen to changes
     media = window.matchMedia('(prefers-color-scheme: dark)')
     media.addEventListener('change', onThemeChange)
     onThemeChange()
   } else if (media) {
+    // Else, remove listener
     media.removeEventListener('change', onThemeChange)
   }
 }, { immediate: true })
 function onThemeChange () {
   systemTheme.value = media!.matches ? 'dark' : 'light'
 }
+/** Refresh the PWA and call registration callback */
 function refreshApp () {
   console.log('refreshApp')
   updateExists.value = false
@@ -153,11 +156,11 @@ function refreshApp () {
     registration.value()
   }
 }
+// Listen for changes to the theme and update Vuetify global theme
 watchEffect(() => {
-  theme.global.name.value = (
-    store.theme === 'system' ? systemTheme.value : store.theme
-  )
+  theme.global.name.value = store.theme === 'system' ? systemTheme.value : store.theme
 })
+// Listen for changes to store locale and update Vuetify current
 watchEffect(() => {
   current.value = store.locale
 })

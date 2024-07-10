@@ -6,9 +6,8 @@
 import timezones from '@/assets/timezones.json'
 import { DateTime } from 'luxon'
 import { coreStore } from '@/store'
-const store = coreStore()
 
-import { ref, onMounted, watch, watchEffect, defineProps } from 'vue'
+import { ref, onMounted, watch, watchEffect } from 'vue'
 import L, { Layer, TileLayer } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useTheme, useLocale } from 'vuetify'
@@ -36,15 +35,20 @@ const props = defineProps<{
   dateConfig: DateConfig
 }>()
 
+// Refs
+const mapElement = ref('')
+const systemTheme = ref('dark')
+
+// Composition stuff
+const store = coreStore()
 const theme = useTheme()
 const { current } = useLocale()
 const primary = theme.current.value.colors.primary
-const mapElement = ref('')
+
 let geoJsonLayer: L.GeoJSON
 let themeLayer: TileLayer
-const systemTheme = ref('dark')
-let media: MediaQueryList
 
+let media: MediaQueryList
 function initMap () {
   const map = L.map(mapElement.value)
 
@@ -129,6 +133,7 @@ function onThemeChange () {
 watchEffect(() => {
   const theme = store.theme === 'system' ? systemTheme.value : store.theme
 
+  // Update the tile layer
   if (themeLayer && themeLayer) {
     themeLayer.setUrl(`//services.arcgisonline.com/arcgis/rest/services/Canvas/${theme === 'dark' ? 'World_Dark_Gray_Base' : 'World_Light_Gray_Base'}/MapServer/tile/{z}/{y}/{x}`)
   }

@@ -6,6 +6,7 @@
   "formFeedbackUnitMissing": "Unit missing",
   "formFeedbackInvalidUnitDefinition": "Invalid or missing unit",
   "formFeedbackIncompatibleUnitTypes": "Incompatible unit types",
+  "formFeedbackNoValidUnitsFound": "No numeric value or no matching units found",
   "formLabelHomeInput": "Input",
   "formPlaceholderHomeInput": "e.g. 1 kg or 3 feet or 4 pints",
   "modalTitleUpdateAvailable": "App update available",

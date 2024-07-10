@@ -6,6 +6,7 @@
   "formFeedbackUnitMissing": "Einheit fehlt",
   "formFeedbackInvalidUnitDefinition": "Ungültige oder fehlende Einheit",
   "formFeedbackIncompatibleUnitTypes": "Inkompatible Einheitstypen",
+  "formFeedbackNoValidUnitsFound": "Keine Anzahl oder keine passenden Einheiten gefunden",
   "formLabelHomeInput": "Eingabe",
   "formPlaceholderHomeInput": "z.B. 1 kg or 3 meter or 4 liter",
   "modalTitleUpdateAvailable": "App-Update verfügbar",
