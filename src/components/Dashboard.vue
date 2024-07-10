@@ -1,18 +1,10 @@
 <template>
   <v-container class="fill-height">
-    <v-responsive
-      class="align-centerfill-height mx-auto"
-      max-width="min(100%, 900px)"
-    >
-      <v-img
-        class="mb-4"
-        height="150"
-        src="@/assets/logo.svg"
-      />
+    <v-responsive class="align-centerfill-height mx-auto" max-width="min(100%, 900px)">
+      <v-img class="mb-4" height="150" src="@/assets/logo.svg" />
 
       <div class="text-center">
         <div class="text-body-2 font-weight-light mb-n1">{{ t('pageHomeLogoWelcome') }}</div>
-
         <h1 class="text-h2 font-weight-bold title">UNI</h1>
         <h1 class="text-h2 font-weight-bold title text-rotated">CON</h1>
       </div>
@@ -21,12 +13,7 @@
 
       <v-row>
         <v-col cols="12">
-          <v-card
-            class="py-4"
-            color="surface-variant"
-            rounded="lg"
-            variant="outlined"
-          >
+          <v-card class="py-4" color="surface-variant" rounded="lg" variant="outlined">
             <template #title>
               <h2 class="text-h5 mb-3 font-weight-bold"><v-icon>{{ mdiArrowDecision }}</v-icon> {{ t('pageHomeCardTitle') }}</h2>
             </template>
@@ -40,17 +27,22 @@
                                 @click:append-inner="shareInput"
                                 v-model="input"
                                 required
-                                :rules="[isValid]">
-                  </v-text-field>
+                                :rules="[isValid]" />
 
                   <template v-if="conversionStatus">
+                    <!-- VueUse to get the geolocation -->
                     <UseGeolocation v-slot="{ error, coords: { latitude, longitude } }" v-if="conversionStatus.dataType === 'area' && conversionStatus.totalSi">
+                      <!-- Show an area map if the input is an area unit type -->
                       <AreaMap :latitude="latitude" :longitude="longitude" :error="error" :squareMeters="conversionStatus.totalSi" class="mb-4" />
                     </UseGeolocation>
+                    <!-- Show a time zone map if the input is a time -->
                     <TimezoneMap :dateConfig="conversionStatus.dateConfig" class="mt-3" v-if="conversionStatus.dateConfig" />
+                    <!-- Else, if something has been converted, show the result -->
                     <div class="d-flex flex-wrap conversion-gap" v-else-if="conversionStatus.converted && conversionStatus.conversions && conversionStatus.conversions.length > 0">
+                      <!-- For each major unit, show a chip -->
                       <v-chip color="primary" label v-for="c in conversionStatus.conversions" :key="`converted-${c.name}`" class="wrap-chip">
                         <div class="d-flex flex-wrap conversion-gap">
+                          <!-- Within each major unit show all sub-divisions -->
                           <div v-for="sub in c.value" :key="`converted-sub-${c.name}-${sub.unitName}`">
                             <h4>{{ t(sub.unitName) }}</h4>
                             <p>{{ n(sub.conversionValue) }}</p>
@@ -58,6 +50,7 @@
                         </div>
                       </v-chip>
                     </div>
+                    <!-- If there's ambiguity about what unit the user wants converted, show all options -->
                     <div class="d-flex flex-wrap conversion-gap" v-else-if="!conversionStatus.converted && conversionStatus.duplicateMatches && conversionStatus.duplicateMatches.length > 0">
                       <v-chip :color="colors.yellow.darken2"
                               label
@@ -78,23 +71,19 @@
     </v-responsive>
 
     <v-dialog v-model="showShare">
-      <v-card
-        :title="t('modalTitleShare')" >
+      <v-card :title="t('modalTitleShare')">
         <template v-slot:prepend>
           <v-icon>{{ mdiShare }}</v-icon>
         </template>
         <v-card-text>
           <div>{{ t('modalTextShare') }}</div>
-
+          <!-- Share URL input -->
           <v-text-field v-model="shareValue" readonly @focus="$event.target.select()" />
         </v-card-text>
 
         <template v-slot:actions>
-          <v-btn
-            class="ms-auto"
-            :text="t('buttonClose')"
-            @click="showShare = false"
-          ></v-btn>
+          <!-- Close button -->
+          <v-btn class="ms-auto" :text="t('buttonClose')" @click="showShare = false" />
         </template>
       </v-card>
     </v-dialog>
