@@ -27,11 +27,15 @@
                                 @click:append-inner="shareInput"
                                 v-model="input"
                                 required
-                                :rules="[isValid]" />
+                                :rules="[isValid]">
+                    <template #prepend>
+                      <UnitMenu name="Menu" :items="unitMenuItems" />
+                    </template>
+                  </v-text-field>
 
                   <template v-if="conversionStatus">
                     <!-- VueUse to get the geolocation -->
-                    <UseGeolocation v-slot="{ error, coords: { latitude, longitude } }" v-if="conversionStatus.dataType === 'area' && conversionStatus.totalSi">
+                    <UseGeolocation v-slot="{ error, coords: { latitude, longitude } }" v-if="conversionStatus.dataType === 'unitTypeArea' && conversionStatus.totalSi">
                       <!-- Show an area map if the input is an area unit type -->
                       <AreaMap :latitude="latitude" :longitude="longitude" :error="error" :squareMeters="conversionStatus.totalSi" class="mb-4" />
                     </UseGeolocation>
@@ -99,7 +103,9 @@ import {
   Ounce,
   Pound,
   Stone,
+  Milligram,
   Gram,
+  MetricTon,
   Kilogram,
   Centimeter,
   Meter,
@@ -130,11 +136,15 @@ import {
   SquareYard,
   SquareFoot,
   SquareInch,
-  SquareCentimeter
+  SquareCentimeter,
+  Millimeter,
+  LongTon,
+  ShortTon
 } from '@/plugins/conversion'
 
 import TimezoneMap from '@/components/TimezoneMap.vue'
 import AreaMap from '@/components/AreaMap.vue'
+import UnitMenu, { UnitMenuItem } from '@/components/UnitMenu.vue'
 import colors from 'vuetify/util/colors'
 import { ref, computed } from 'vue'
 import { useLocale } from 'vuetify'
@@ -165,19 +175,24 @@ function addUnit (unit: Unit): void {
 }
 
 // Add all the units
-addUnit(new Ounce())
-addUnit(new Pound())
 addUnit(new Stone())
-addUnit(new Gram())
+addUnit(new Pound())
+addUnit(new Ounce())
+addUnit(new LongTon())
+addUnit(new MetricTon())
+addUnit(new ShortTon())
 addUnit(new Kilogram())
-addUnit(new Centimeter())
-addUnit(new Meter())
-addUnit(new Kilometer())
+addUnit(new Gram())
+addUnit(new Milligram())
 addUnit(new Parsec())
-addUnit(new Inch())
-addUnit(new Foot())
-addUnit(new Yard())
+addUnit(new Kilometer())
+addUnit(new Meter())
+addUnit(new Centimeter())
+addUnit(new Millimeter())
 addUnit(new Mile())
+addUnit(new Yard())
+addUnit(new Foot())
+addUnit(new Inch())
 addUnit(new Liter())
 addUnit(new CubicMeter())
 addUnit(new GallonUk())
@@ -187,14 +202,14 @@ addUnit(new PintUs())
 addUnit(new Celsius())
 addUnit(new Fahrenheit())
 addUnit(new Kelvin())
-addUnit(new Second())
-addUnit(new Minute())
-addUnit(new Hour())
 addUnit(new Day())
+addUnit(new Hour())
+addUnit(new Minute())
+addUnit(new Second())
 addUnit(new Hectare())
-addUnit(new SquareMeter())
 addUnit(new Acre())
 addUnit(new SquareKilometer())
+addUnit(new SquareMeter())
 addUnit(new SquareCentimeter())
 addUnit(new SquareMile())
 addUnit(new SquareYard())
@@ -319,6 +334,37 @@ function isValid (value?: string): boolean | string {
   return true
 }
 
+const unitMenuItems = computed<UnitMenuItem[]>(() => {
+  const result: UnitMenuItem[] = []
+
+  const types: Map<string, Unit[]> = new Map<string, Unit[]>()
+
+  units.forEach(u => {
+    const type = u.type
+    if (types.has(type)) {
+      types.get(type)?.push(u)
+    } else {
+      types.set(type, [u])
+    }
+  })
+
+  types.forEach((units: Unit[], type: string) => {
+    result.push({
+      name: type,
+      items: units.map(u => {
+        return {
+          name: u.name,
+          action: () => {
+            input.value = `1 ${u.primaryAbbreviation}`
+          }
+        }
+      })
+    })
+  })
+
+  return result
+})
+
 const conversionStatus = computed(() => {
   if (isValid(input.value) !== true) {
     return null
@@ -350,7 +396,7 @@ const conversionStatus = computed(() => {
       }
     } else {
       const potentialParts = getPotentialParts(parts)
-      
+
       let totalSi = 0
       for (let i = 0; i < potentialParts.length; i++) {
         const match: Unit[] | undefined = mapping.get(potentialParts[i].unit.toLowerCase())

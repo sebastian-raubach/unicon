@@ -1,10 +1,9 @@
 import { ConversionResult } from '../ConversionResult'
-import { WeightUnit } from '../WeightUnit'
-import { Milligram } from './Milligram'
+import { DistanceUnit } from '../DistanceUnit'
 
-export class Gram extends WeightUnit {
+export class Millimeter extends DistanceUnit {
   constructor() {
-    super('unitWeightGram', 'g', ['g', 'gram', 'grams', 'gramm'], new Milligram())
+    super('unitDistanceMillimeter', 'mm', ['mm', 'millimeter', 'millimetre', 'millimeters', 'millimetres'])
   }
 
   toSiUnit(value: number): number {

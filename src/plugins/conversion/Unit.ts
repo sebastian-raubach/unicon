@@ -25,7 +25,7 @@ export abstract class Unit {
       // Check if we can get sub-units in there
       const si = this.toSiUnit(Math.floor(converted))
       const remainder = original - si
-      if (remainder !== 0) {
+      if (remainder > 0) {
         result = result.concat(this.subUnit.fromSiUnit(remainder))
       }
     }

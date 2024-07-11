@@ -1,8 +1,13 @@
 import { Ounce } from './weight/Ounce'
 import { Pound } from './weight/Pound'
 import { Stone } from './weight/Stone'
+import { Milligram } from './weight/Milligram'
 import { Gram } from './weight/Gram'
+import { MetricTon } from './weight/MetricTon'
+import { ShortTon } from './weight/ShortTon'
+import { LongTon } from './weight/LongTon'
 import { Kilogram } from './weight/Kilogram'
+import { Millimeter } from './distance/Millimeter'
 import { Centimeter } from './distance/Centimeter'
 import { Meter } from './distance/Meter'
 import { Kilometer } from './distance/Kilometer'
@@ -38,8 +43,13 @@ export {
   Ounce,
   Pound,
   Stone,
+  Milligram,
   Gram,
+  MetricTon,
+  ShortTon,
+  LongTon,
   Kilogram,
+  Millimeter,
   Centimeter,
   Meter,
   Kilometer,

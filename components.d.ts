@@ -9,8 +9,10 @@ declare module 'vue' {
   export interface GlobalComponents {
     AreaMap: typeof import('./src/components/AreaMap.vue')['default']
     Dashboard: typeof import('./src/components/Dashboard.vue')['default']
+    MenuWithSub: typeof import('./src/components/MenuWithSub.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TimezoneMap: typeof import('./src/components/TimezoneMap.vue')['default']
+    UnitMenu: typeof import('./src/components/UnitMenu.vue')['default']
   }
 }
