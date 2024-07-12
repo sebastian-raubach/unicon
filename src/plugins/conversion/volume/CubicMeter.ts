@@ -1,10 +1,9 @@
 import { ConversionResult } from '../ConversionResult'
-import { SiUnit } from '../SiUnit'
 import { VolumeUnit } from '../VolumeUnit'
 
-export class CubicMeter extends VolumeUnit implements SiUnit {
+export class CubicMeter extends VolumeUnit {
   constructor() {
-    super('unitVolumeCubicMeter', 'm3', ['m3', 'cubic meter', 'cubic meters', 'cubic metre', 'cubic metres', 'kubikmeter'])
+    super('unitVolumeCubicMeter', 'm3', ['m3', 'cubic meter', 'cubic meters', 'cubic metre', 'cubic metres', 'kubikmeter'], true)
   }
 
   toSiUnit(value: number): number {

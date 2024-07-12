@@ -1,10 +1,9 @@
 import { ConversionResult } from '../ConversionResult'
-import { SiUnit } from '../SiUnit'
 import { TemperatureUnit } from '../TemperatureUnit'
 
-export class Kelvin extends TemperatureUnit implements SiUnit {
+export class Kelvin extends TemperatureUnit {
   constructor() {
-    super('unitTemperatureKelvin', 'k', ['k', 'kelvin'])
+    super('unitTemperatureKelvin', 'k', ['k', 'kelvin'], true)
   }
 
   toSiUnit(value: number): number {

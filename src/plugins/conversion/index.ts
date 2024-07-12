@@ -16,6 +16,7 @@ import { Foot } from './distance/Foot'
 import { Inch } from './distance/Inch'
 import { Yard } from './distance/Yard'
 import { Mile } from './distance/Mile'
+import { NauticMile } from './distance/NauticMile'
 import { Liter } from './volume/Liter'
 import { CubicMeter } from './volume/CubicMeter'
 import { GallonUk } from './volume/GallonUk'
@@ -38,6 +39,11 @@ import { SquareMile } from './area/SquareMile'
 import { SquareYard } from './area/SquareYard'
 import { SquareFoot } from './area/SquareFoot'
 import { SquareInch } from './area/SquareInch'
+import { MeterPerSecond } from './speed/MeterPerSecond'
+import { KilometerPerHour } from './speed/KilometerPerHour'
+import { MilePerHour } from './speed/MilePerHour'
+import { Knot } from './speed/Knot'
+import { FootPerSecond } from './speed/FootPerSecond'
 
 export {
   Ounce,
@@ -58,6 +64,7 @@ export {
   Inch,
   Yard,
   Mile,
+  NauticMile,
   Liter,
   CubicMeter,
   GallonUk,
@@ -79,5 +86,10 @@ export {
   SquareMile,
   SquareYard,
   SquareFoot,
-  SquareInch
+  SquareInch,
+  MeterPerSecond,
+  KilometerPerHour,
+  MilePerHour,
+  Knot,
+  FootPerSecond
 }

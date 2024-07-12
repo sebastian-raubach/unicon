@@ -4,7 +4,7 @@ import { Meter } from './Meter'
 
 export class Kilometer extends DistanceUnit {
   constructor() {
-    super('unitDistanceKilometer', 'km', ['km', 'kilometer', 'kilometre', 'kilometers', 'kilometres'], new Meter())
+    super('unitDistanceKilometer', 'km', ['km', 'kilometer', 'kilometre', 'kilometers', 'kilometres'], false, new Meter())
   }
 
   toSiUnit(value: number): number {

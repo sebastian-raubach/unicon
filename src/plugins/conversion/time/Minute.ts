@@ -4,7 +4,7 @@ import { Second } from './Second'
 
 export class Minute extends TimeUnit {
   constructor() {
-    super('unitTimeMinute', 'min', ['min', 'minute', 'minutes', 'minuten'], new Second())
+    super('unitTimeMinute', 'min', ['min', 'minute', 'minutes', 'minuten'], false, new Second())
   }
 
   toSiUnit(value: number): number {

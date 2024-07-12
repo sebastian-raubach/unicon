@@ -4,7 +4,7 @@ import { Ounce } from './Ounce'
 
 export class Pound extends WeightUnit {
   constructor() {
-    super('unitWeightPound', 'lb', ['lb', 'pound', 'pounds', 'pfund'], new Ounce())
+    super('unitWeightPound', 'lb', ['lb', 'pound', 'pounds', 'pfund'], false, new Ounce())
   }
 
   toSiUnit(value: number): number {

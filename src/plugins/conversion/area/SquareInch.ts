@@ -3,7 +3,7 @@ import { AreaUnit } from '../AreaUnit'
 
 export class SquareInch extends AreaUnit {
   constructor() {
-    super('unitAreaSquareInch', 'in2', ['in2', 'square in', 'square inch', 'square inches', 'quadratzoll'])
+    super('unitAreaSquareInch', 'in2', ['in2', 'square in', 'square inch', 'square inches', 'quadratzoll'], false)
   }
 
   toSiUnit(value: number): number {

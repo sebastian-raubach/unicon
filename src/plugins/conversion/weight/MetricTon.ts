@@ -4,7 +4,7 @@ import { Kilogram } from './Kilogram'
 
 export class MetricTon extends WeightUnit {
   constructor() {
-    super('unitWeightMetricTon', 'metric ton', ['metric ton', 't', 'ton', 'tons', 'metric tons', 'tonne', 'tonnes'], new Kilogram())
+    super('unitWeightMetricTon', 'metric ton', ['metric ton', 't', 'ton', 'tons', 'metric tons', 'tonne', 'tonnes'], false, new Kilogram())
   }
 
   toSiUnit(value: number): number {

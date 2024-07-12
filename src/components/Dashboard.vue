@@ -139,7 +139,13 @@ import {
   SquareCentimeter,
   Millimeter,
   LongTon,
-  ShortTon
+  ShortTon,
+  MeterPerSecond,
+  KilometerPerHour,
+  MilePerHour,
+  Knot,
+  FootPerSecond,
+  NauticMile
 } from '@/plugins/conversion'
 
 import TimezoneMap from '@/components/TimezoneMap.vue'
@@ -148,7 +154,7 @@ import UnitMenu, { UnitMenuItem } from '@/components/UnitMenu.vue'
 import colors from 'vuetify/util/colors'
 import { ref, computed } from 'vue'
 import { useLocale } from 'vuetify'
-import { mdiArrowDecision, mdiShare } from '@mdi/js'
+import { mdiArrowDecision, mdiClockOutline, mdiCupWater, mdiScale, mdiSelectDrag, mdiShare, mdiSpeedometer, mdiTapeMeasure, mdiThermometer } from '@mdi/js'
 import { PotentialPart } from '@/plugins/PotentialPart'
 
 // Composition stuff
@@ -189,6 +195,7 @@ addUnit(new Kilometer())
 addUnit(new Meter())
 addUnit(new Centimeter())
 addUnit(new Millimeter())
+addUnit(new NauticMile())
 addUnit(new Mile())
 addUnit(new Yard())
 addUnit(new Foot())
@@ -215,6 +222,11 @@ addUnit(new SquareMile())
 addUnit(new SquareYard())
 addUnit(new SquareFoot())
 addUnit(new SquareInch())
+addUnit(new MeterPerSecond())
+addUnit(new KilometerPerHour())
+addUnit(new MilePerHour())
+addUnit(new Knot())
+addUnit(new FootPerSecond())
 
 // Refs
 const input = ref<string>()
@@ -349,17 +361,49 @@ const unitMenuItems = computed<UnitMenuItem[]>(() => {
   })
 
   types.forEach((units: Unit[], type: string) => {
+    let icon
+
+    switch (type) {
+      case 'unitTypeWeight':
+        icon = mdiScale
+        break
+      case 'unitTypeDistance':
+        icon = mdiTapeMeasure
+        break
+      case 'unitTypeVolume':
+        icon = mdiCupWater
+        break
+      case 'unitTypeTemperature':
+        icon = mdiThermometer
+        break
+      case 'unitTypeSpeed':
+        icon = mdiSpeedometer
+        break
+      case 'unitTypeArea':
+        icon = mdiSelectDrag
+        break
+      case 'unitTypeTime':
+        icon = mdiClockOutline
+        break
+      default:
+        icon = undefined
+    }
+
     result.push({
       name: type,
+      icon: icon,
       items: units.map(u => {
         return {
           name: u.name,
+          isSiUnit: u.isSiUnit,
           action: () => {
             input.value = `1 ${u.primaryAbbreviation}`
           }
         }
       })
     })
+
+    result.sort((a, b) => t(a.name).localeCompare(t(b.name)))
   })
 
   return result

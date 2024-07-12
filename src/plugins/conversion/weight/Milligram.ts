@@ -3,7 +3,7 @@ import { WeightUnit } from '../WeightUnit'
 
 export class Milligram extends WeightUnit {
   constructor() {
-    super('unitWeightMilligram', 'mg', ['mg', 'milligram', 'milligrams', 'gramm', 'milligramm'])
+    super('unitWeightMilligram', 'mg', ['mg', 'milligram', 'milligrams', 'gramm', 'milligramm'], false)
   }
 
   toSiUnit(value: number): number {

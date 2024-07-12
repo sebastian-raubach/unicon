@@ -4,7 +4,7 @@ import { Kilometer } from './Kilometer'
 
 export class Parsec extends DistanceUnit {
   constructor() {
-    super('unitDistanceParsec', 'pc', ['pc', 'parsec', 'parsecs'], new Kilometer())
+    super('unitDistanceParsec', 'pc', ['pc', 'parsec', 'parsecs'], false, new Kilometer())
   }
 
   toSiUnit(value: number): number {

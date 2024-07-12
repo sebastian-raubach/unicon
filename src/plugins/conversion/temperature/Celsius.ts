@@ -3,7 +3,7 @@ import { TemperatureUnit } from '../TemperatureUnit'
 
 export class Celsius extends TemperatureUnit {
   constructor() {
-    super('unitTemperatureCelsius', 'c', ['c', 'celsius', '°c'])
+    super('unitTemperatureCelsius', 'c', ['c', 'celsius', '°c'], false)
   }
 
   toSiUnit(value: number): number {

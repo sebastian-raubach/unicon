@@ -1,10 +1,9 @@
 import { ConversionResult } from '../ConversionResult'
-import { SiUnit } from '../SiUnit'
 import { TimeUnit } from '../TimeUnit'
 
-export class Second extends TimeUnit implements SiUnit {
+export class Second extends TimeUnit {
   constructor() {
-    super('unitTimeSecond', 's', ['s', 'second', 'seconds', 'sekunde', 'sekunden'])
+    super('unitTimeSecond', 's', ['s', 'second', 'seconds', 'sekunde', 'sekunden'], true)
   }
 
   toSiUnit(value: number): number {

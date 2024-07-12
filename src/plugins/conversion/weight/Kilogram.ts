@@ -1,11 +1,10 @@
 import { ConversionResult } from '../ConversionResult'
-import { SiUnit } from '../SiUnit'
 import { WeightUnit } from '../WeightUnit'
 import { Gram } from './Gram'
 
-export class Kilogram extends WeightUnit implements SiUnit {
+export class Kilogram extends WeightUnit {
   constructor() {
-    super('unitWeightKilogram', 'kg', ['kg', 'kilogram', 'kilograms', 'kilogramm'], new Gram())
+    super('unitWeightKilogram', 'kg', ['kg', 'kilogram', 'kilograms', 'kilogramm'], true, new Gram())
   }
 
   toSiUnit(value: number): number {

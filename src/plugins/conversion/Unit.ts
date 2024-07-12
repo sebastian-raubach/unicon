@@ -4,13 +4,15 @@ export abstract class Unit {
   name: string
   primaryAbbreviation: string
   abbreviations: string[]
+  isSiUnit: boolean
   type: string
   subUnit: Unit | undefined
 
-  constructor(name: string, primaryAbbreviation: string, abbreviations: string[], type: string, subUnit?: Unit) {
+  constructor(name: string, primaryAbbreviation: string, abbreviations: string[], isSiUnit: boolean, type: string, subUnit?: Unit) {
     this.name = name
     this.primaryAbbreviation = primaryAbbreviation
     this.abbreviations = abbreviations
+    this.isSiUnit = isSiUnit
     this.type = type
     this.subUnit = subUnit
   }

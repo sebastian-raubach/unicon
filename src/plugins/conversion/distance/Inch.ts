@@ -3,7 +3,7 @@ import { DistanceUnit } from '../DistanceUnit'
 
 export class Inch extends DistanceUnit {
   constructor() {
-    super('unitDistanceInch', 'in', ['in', 'inch', 'inches', 'zoll'])
+    super('unitDistanceInch', 'in', ['in', 'inch', 'inches', 'zoll'], false)
   }
 
   toSiUnit(value: number): number {

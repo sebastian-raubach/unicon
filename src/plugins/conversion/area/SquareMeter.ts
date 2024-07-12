@@ -1,11 +1,10 @@
 import { ConversionResult } from '../ConversionResult'
 import { AreaUnit } from '../AreaUnit'
 import { SquareCentimeter } from './SquareCentimeter'
-import { SiUnit } from '../SiUnit'
 
-export class SquareMeter extends AreaUnit implements SiUnit {
+export class SquareMeter extends AreaUnit {
   constructor() {
-    super('unitAreaSquareMeter', 'm2', ['m2', 'square m', 'square meter', 'square meters', 'square metre', 'square metres', 'quadratmeter'], new SquareCentimeter())
+    super('unitAreaSquareMeter', 'm2', ['m2', 'square m', 'square meter', 'square meters', 'square metre', 'square metres', 'quadratmeter'], true, new SquareCentimeter())
   }
 
   toSiUnit(value: number): number {

@@ -3,7 +3,7 @@ import { AreaUnit } from '../AreaUnit'
 
 export class Acre extends AreaUnit {
   constructor() {
-    super('unitAreaAcre', 'ac', ['ac', 'acre', 'acres', 'acker'])
+    super('unitAreaAcre', 'ac', ['ac', 'acre', 'acres', 'acker'], false)
   }
 
   toSiUnit(value: number): number {

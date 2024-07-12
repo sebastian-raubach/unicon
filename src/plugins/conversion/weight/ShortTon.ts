@@ -4,7 +4,7 @@ import { Pound } from './Pound'
 
 export class ShortTon extends WeightUnit {
   constructor() {
-    super('unitWeightShortTon', 'ton US', ['ton US', 't', 'ton', 'tons', 't (US)', 't US', 'ton (US)', 'tons US', 'tons (US)', 'short ton', 'short tons', 'tonne', 'tonnes'], new Pound())
+    super('unitWeightShortTon', 'ton US', ['ton US', 't', 'ton', 'tons', 't (US)', 't US', 'ton (US)', 'tons US', 'tons (US)', 'short ton', 'short tons', 'tonne', 'tonnes'], false, new Pound())
   }
 
   toSiUnit(value: number): number {

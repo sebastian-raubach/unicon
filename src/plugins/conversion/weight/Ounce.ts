@@ -3,7 +3,7 @@ import { WeightUnit } from '../WeightUnit'
 
 export class Ounce extends WeightUnit {
   constructor() {
-    super('unitWeightOunce', 'oz', ['oz', 'ounce', 'ounces', 'unze', 'unzen'])
+    super('unitWeightOunce', 'oz', ['oz', 'ounce', 'ounces', 'unze', 'unzen'], false)
   }
 
   toSiUnit(value: number): number {

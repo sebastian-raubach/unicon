@@ -4,7 +4,7 @@ import { Foot } from './Foot'
 
 export class Yard extends DistanceUnit {
   constructor() {
-    super('unitDistanceYard', 'yd', ['yd', 'yard', 'yards'], new Foot())
+    super('unitDistanceYard', 'yd', ['yd', 'yard', 'yards'], false, new Foot())
   }
 
   toSiUnit(value: number): number {

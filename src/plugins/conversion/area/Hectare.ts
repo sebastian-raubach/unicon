@@ -3,7 +3,7 @@ import { AreaUnit } from '../AreaUnit'
 
 export class Hectare extends AreaUnit {
   constructor() {
-    super('unitAreaHectare', 'ha', ['ha', 'hectare', 'hectares', 'hektar', 'hektare'])
+    super('unitAreaHectare', 'ha', ['ha', 'hectare', 'hectares', 'hektar', 'hektare'], false)
   }
 
   toSiUnit(value: number): number {

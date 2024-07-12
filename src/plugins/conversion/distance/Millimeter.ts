@@ -3,7 +3,7 @@ import { DistanceUnit } from '../DistanceUnit'
 
 export class Millimeter extends DistanceUnit {
   constructor() {
-    super('unitDistanceMillimeter', 'mm', ['mm', 'millimeter', 'millimetre', 'millimeters', 'millimetres'])
+    super('unitDistanceMillimeter', 'mm', ['mm', 'millimeter', 'millimetre', 'millimeters', 'millimetres'], false)
   }
 
   toSiUnit(value: number): number {

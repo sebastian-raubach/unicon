@@ -3,7 +3,7 @@ import { VolumeUnit } from '../VolumeUnit'
 
 export class PintUs extends VolumeUnit {
   constructor() {
-    super('unitVolumePintUs', 'pt US', ['pint', 'pt', 'pt US', 'pt (US)', 'pint US', 'pint (US)', 'pints'])
+    super('unitVolumePintUs', 'pt US', ['pint', 'pt', 'pt US', 'pt (US)', 'pint US', 'pint (US)', 'pints'], false)
   }
 
   toSiUnit(value: number): number {

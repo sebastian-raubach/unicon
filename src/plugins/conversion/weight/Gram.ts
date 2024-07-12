@@ -4,7 +4,7 @@ import { Milligram } from './Milligram'
 
 export class Gram extends WeightUnit {
   constructor() {
-    super('unitWeightGram', 'g', ['g', 'gram', 'grams', 'gramm'], new Milligram())
+    super('unitWeightGram', 'g', ['g', 'gram', 'grams', 'gramm'], false, new Milligram())
   }
 
   toSiUnit(value: number): number {

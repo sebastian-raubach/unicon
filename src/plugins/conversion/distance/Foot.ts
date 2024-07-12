@@ -4,7 +4,7 @@ import { Inch } from './Inch'
 
 export class Foot extends DistanceUnit {
   constructor() {
-    super('unitDistanceFoot', 'ft', ['ft', 'foot', 'feet', 'fuß', 'füße'], new Inch())
+    super('unitDistanceFoot', 'ft', ['ft', 'foot', 'feet', 'fuß', 'füße'], false, new Inch())
   }
 
   toSiUnit(value: number): number {

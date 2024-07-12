@@ -4,7 +4,7 @@ import { Millimeter } from './Millimeter'
 
 export class Centimeter extends DistanceUnit {
   constructor() {
-    super('unitDistanceCentimeter', 'cm', ['cm', 'centimeter', 'centimetre', 'centimeters', 'centimetres', 'zentimeter'], new Millimeter())
+    super('unitDistanceCentimeter', 'cm', ['cm', 'centimeter', 'centimetre', 'centimeters', 'centimetres', 'zentimeter'], false, new Millimeter())
   }
 
   toSiUnit(value: number): number {

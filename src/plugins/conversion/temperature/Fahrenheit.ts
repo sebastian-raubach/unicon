@@ -3,7 +3,7 @@ import { TemperatureUnit } from '../TemperatureUnit'
 
 export class Fahrenheit extends TemperatureUnit {
   constructor() {
-    super('unitTemperatureFahrenheit', 'f', ['f', 'fahrenheit', '°f'])
+    super('unitTemperatureFahrenheit', 'f', ['f', 'fahrenheit', '°f'], false)
   }
 
   toSiUnit(value: number): number {

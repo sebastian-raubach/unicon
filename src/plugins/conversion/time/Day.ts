@@ -4,7 +4,7 @@ import { Hour } from './Hour'
 
 export class Day extends TimeUnit {
   constructor() {
-    super('unitTimeDay', 'd', ['d', 'day', 'days', 'tag', 'tage'], new Hour())
+    super('unitTimeDay', 'd', ['d', 'day', 'days', 'tag', 'tage'], false, new Hour())
   }
 
   toSiUnit(value: number): number {
