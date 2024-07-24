@@ -12,7 +12,12 @@
 <img src="docs/unicon-banner.png" style="max-width: 100%;" alt="UNICON running on various devices">
 
 UNICON is a Progressive Web App that helps you convert any unit to any other unit. So metres into yards, kilograms into stones and pounds, acres into square feet etc.
+
 UNICON works completely offline so you can use it when you're out and about.
+
+## Find it here!
+
+https://sebastian-raubach.github.io/unicon
 
 ## Usage
 
@@ -27,6 +32,67 @@ For area units (`acres`, `m2`, `square foot` etc) UNICON will show a map preview
 ## Comments
 
 UNICON is by far not a complete list of conversion tools. There is a limited list of units and a limited list of unit types. I'm planning to expand these lists over time so bear with me.
+
+Currently supported are:
+
+### Area
+
+- Square Centimeter, Square Meter, Square Kilometer
+- Square Inch, Square Foot, Square Yard, Square Mile
+- Acre
+- Hectare
+
+### Distance
+
+- Millimeter, Centimeter, Meter, Kilometer,
+- Inch, Foot, Yard, Mile
+- Nautic mile
+- Parsec
+
+### Speed
+
+- Foot/second
+- Kilometer/hour (kph)
+- Knots
+- Meter/second (mps)
+- Miles/hour (mph)
+
+### Temperature
+
+- Celsius
+- Fahrenheit
+- Kelvin
+
+### Time
+
+- Day
+- Hour
+- Minute
+- Second
+
+### Volume
+
+- Cubic meter (m3)
+- Gallon (UK and US)
+- Liter
+- Pint (UK and US)
+
+### Weight
+
+- Milligram, Gram, Kilogram, Metric Ton
+- Ounce, Pound, Stone
+- Long ton (US)
+- Short ton (UK)
+
+## Made using
+
+- [Typescript](https://www.typescriptlang.org/) as the main programming language
+- [Vue 3](https://vuejs.org/) [composition API](https://vuejs.org/guide/extras/composition-api-faq.html) as the JavaScript framework
+- [VueUse](https://vueuse.org/) for composition utilities
+- [Vuetify](https://vuetifyjs.com/) as the UI library
+- [Leaflet](https://leafletjs.com/) for maps
+- [Luxon](https://github.com/moment/luxon) for working with dates and timezones
+- [UnitConverters.net](https://www.unitconverters.net/) for conversion rates
 
 ## UNICON website
 
