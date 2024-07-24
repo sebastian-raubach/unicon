@@ -27,6 +27,7 @@
                                 @click:append-inner="shareInput"
                                 v-model="input"
                                 required
+                                ref="textField"
                                 :rules="[isValid]">
                     <template #prepend>
                       <UnitMenu name="Menu" :items="unitMenuItems" />
@@ -152,7 +153,7 @@ import TimezoneMap from '@/components/TimezoneMap.vue'
 import AreaMap from '@/components/AreaMap.vue'
 import UnitMenu, { UnitMenuItem } from '@/components/UnitMenu.vue'
 import colors from 'vuetify/util/colors'
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import { useLocale } from 'vuetify'
 import { mdiArrowDecision, mdiClockOutline, mdiCupWater, mdiScale, mdiSelectDrag, mdiShare, mdiSpeedometer, mdiTapeMeasure, mdiThermometer } from '@mdi/js'
 import { PotentialPart } from '@/plugins/PotentialPart'
@@ -232,6 +233,7 @@ addUnit(new FootPerSecond())
 const input = ref<string>()
 const shareValue = ref<string>()
 const showShare = ref<boolean>(false)
+const textField = ref<HTMLInputElement>()
 
 // Read URL input if available
 let urlParams = new URLSearchParams(window.location.search)
@@ -398,6 +400,13 @@ const unitMenuItems = computed<UnitMenuItem[]>(() => {
           isSiUnit: u.isSiUnit,
           action: () => {
             input.value = `1 ${u.primaryAbbreviation}`
+
+            nextTick(() => {
+              if (textField && textField.value) {
+                textField.value.focus()
+                textField.value.setSelectionRange(0, 1)
+              }
+            })
           }
         }
       })
