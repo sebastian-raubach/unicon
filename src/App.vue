@@ -14,6 +14,7 @@
           </v-btn>
         </template>
         <v-list>
+          <v-list-subheader class="text-high-emphasis text-uppercase font-weight-black">{{ t('menuHeaderTranslations') }}</v-list-subheader>
           <v-list-item
             @click="store.setLocale(language.locale)"
             v-for="language in languages"
@@ -31,6 +32,7 @@
           </v-btn>
         </template>
         <v-list>
+          <v-list-subheader class="text-high-emphasis text-uppercase font-weight-black">{{ t('menuHeaderTheme') }}</v-list-subheader>
           <v-list-item @click="store.setTheme('light')" :active="store.theme === 'light'">
             <template v-slot:prepend>
               <v-icon>{{ mdiWhiteBalanceSunny }}</v-icon>

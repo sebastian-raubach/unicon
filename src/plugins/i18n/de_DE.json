@@ -10,6 +10,8 @@
   "formFeedbackNoValidUnitsFound": "Keine Anzahl oder keine passenden Einheiten gefunden",
   "formLabelHomeInput": "Eingabe",
   "formPlaceholderHomeInput": "z.B. 1 kg or 3 meter or 4 liter",
+  "menuHeaderTranslations": "Übersetzungen",
+  "menuHeaderTheme": "Theme",
   "modalTitleUpdateAvailable": "App-Update verfügbar",
   "modalTextUpdateAvailable": "Eine neue Version von UNICON ist verfügbar. Bitte mit dem Knopf unten aktualisieren und neu laden.",
   "modalTitleInformation": "Information",
@@ -71,7 +73,7 @@
   "unitTypeTime": "Zeit",
   "unitTypeTemperature": "Temperatur",
   "unitTypeSpeed": "Geschwindigkeit",
-  "themeLight": "Tagmodus",
-  "themeDark": "Nachtmodus",
-  "themeSystem": "Automatischer Modus"
+  "themeLight": "Tag",
+  "themeDark": "Nacht",
+  "themeSystem": "System"
 }

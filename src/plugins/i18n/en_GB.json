@@ -10,6 +10,8 @@
   "formFeedbackNoValidUnitsFound": "No numeric value or no matching units found",
   "formLabelHomeInput": "Input",
   "formPlaceholderHomeInput": "e.g. 1 kg or 3 feet or 4 pints",
+  "menuHeaderTranslations": "Translations",
+  "menuHeaderTheme": "Theme",
   "modalTitleUpdateAvailable": "App update available",
   "modalTextUpdateAvailable": "An updated version of UNICON is available. Please use the button below to load the new content and refresh the page.",
   "modalTitleInformation": "Information",
@@ -71,7 +73,7 @@
   "unitTypeTime": "Time",
   "unitTypeTemperature": "Temperature",
   "unitTypeSpeed": "Speed",
-  "themeLight": "Light mode",
-  "themeDark": "Dark mode",
-  "themeSystem": "Automatic mode"
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeSystem": "System"
 }
