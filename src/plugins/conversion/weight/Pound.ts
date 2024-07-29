@@ -8,9 +8,9 @@ export class Pound extends WeightUnit {
   }
 
   toSiUnit(value: number): number {
-    return value * 0.45359237
+    return value / 2.2046226218
   }
   fromSiUnit(value: number): ConversionResult[] {
-    return this.adjustSubUnits(value, value / 0.45359237)
+    return this.adjustSubUnits(value, value * 2.2046226218)
   }
 }

@@ -478,10 +478,16 @@ const conversionStatus = computed(() => {
       const others = units.filter((u: Unit) => u.type === dataType)
 
       others.forEach(o => {
-        result.push({
-          name: o.name,
-          value: o.fromSiUnit(totalSi)
-        })
+        const value = o.fromSiUnit(totalSi)
+
+        if (value.length > 1 && value[0].conversionValue === 0) {
+          // Nothing here
+        } else {
+          result.push({
+            name: o.name,
+            value: value
+          })
+        }
       })
 
       return {
