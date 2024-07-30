@@ -123,6 +123,7 @@ document.addEventListener('swUpdated', (event: any) => {
   updateExists.value = true
 }, { once: true })
 
+// Available languages
 const languages = [{
   locale: 'en',
   flag: '🇬🇧',
