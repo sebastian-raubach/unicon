@@ -17,7 +17,7 @@ UNICON works completely offline so you can use it when you're out and about.
 
 ## Find it here!
 
-https://sebastian-raubach.github.io/unicon
+https://unicon.pages.dev/
 
 ## Usage
 
@@ -96,4 +96,4 @@ Currently supported are:
 
 ## UNICON website
 
-UNICON is available at https://sebastian-raubach.github.io/unicon
+UNICON is available at https://unicon.pages.dev/
