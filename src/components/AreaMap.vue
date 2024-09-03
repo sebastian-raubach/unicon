@@ -72,6 +72,9 @@ function initMap () {
   map.scrollWheelZoom.disable()
   map.on('focus', () => map.scrollWheelZoom.enable())
   map.on('blur', () => map.scrollWheelZoom.disable())
+  map.on('dragend', () => {
+    updateRectangle(true)
+  })
 }
 
 watch(() => store.theme, (value: string) => {
@@ -95,10 +98,12 @@ watchEffect(() => {
   }
 })
 
-function updateRectangle () {
+function updateRectangle (useCenter = false) {
   // Calculate the dimensions of the square by using an invisible circle
   const radius = Math.sqrt(props.squareMeters) / 2
-  if (props.latitude !== undefined && props.latitude !== null && props.longitude !== undefined && props.longitude !== null && props.latitude !== Infinity && props.longitude !== Infinity) {
+  if (useCenter) {
+    circle.setLatLng(map.getCenter())
+  } else if (props.latitude !== undefined && props.latitude !== null && props.longitude !== undefined && props.longitude !== null && props.latitude !== Infinity && props.longitude !== Infinity) {
     // Update center
     circle.setLatLng(new LatLng(props.latitude, props.longitude))
   }
@@ -108,7 +113,9 @@ function updateRectangle () {
   // Update rect to same bounds
   rectangle.setBounds(bounds)
   // Update map view
-  map.fitBounds(bounds, { padding: [50, 50] })
+  if (!useCenter) {
+    map.fitBounds(bounds, { padding: [50, 50] })
+  }
 }
 // If any prop changes, update the rectangle
 watch(() => props, () => {
