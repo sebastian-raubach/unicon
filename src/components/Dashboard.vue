@@ -25,12 +25,19 @@
                                 :placeholder="$t('formPlaceholderHomeInput')"
                                 :append-inner-icon="isValid(input) === true ? mdiShare : undefined"
                                 @click:append-inner="shareInput"
+                                @blur="updateRecentSearches"
                                 v-model="input"
                                 required
                                 ref="textField"
                                 :rules="[isValid]">
                     <template #prepend>
                       <UnitMenu name="Menu" :items="unitMenuItems" />
+                    </template>
+                    <template #details v-if="(!input || input.length < 1) && recentSearches && recentSearches.length > 0">
+                      <div class="d-flex flex-wrap">
+                        <v-chip @click="store.setRecentSearches([])" class="mt-2 mx-1" label variant="tonal"><v-icon>{{ mdiDelete }}</v-icon></v-chip>
+                        <v-chip v-for="(search, index) in recentSearches" :key="`recent-search-${index}`" @click="input = search" class="mt-2 mx-1" label variant="tonal">{{ search }}</v-chip>
+                      </div>
                     </template>
                   </v-text-field>
 
@@ -153,13 +160,15 @@ import TimezoneMap from '@/components/TimezoneMap.vue'
 import AreaMap from '@/components/AreaMap.vue'
 import UnitMenu, { UnitMenuItem } from '@/components/UnitMenu.vue'
 import colors from 'vuetify/util/colors'
-import { ref, computed, nextTick } from 'vue'
+import { coreStore } from '@/store'
+import { ref, computed, nextTick, watchEffect } from 'vue'
 import { useLocale } from 'vuetify'
-import { mdiArrowDecision, mdiClockOutline, mdiCupWater, mdiScale, mdiSelectDrag, mdiShare, mdiSpeedometer, mdiTapeMeasure, mdiThermometer } from '@mdi/js'
+import { mdiArrowDecision, mdiClockOutline, mdiCupWater, mdiDelete, mdiScale, mdiSelectDrag, mdiShare, mdiSpeedometer, mdiTapeMeasure, mdiThermometer } from '@mdi/js'
 import { PotentialPart } from '@/plugins/PotentialPart'
 
 // Composition stuff
 const { t, n } = useLocale()
+const store = coreStore()
 
 // Keep a mapping of unit abbreviations/synonyms to possible Unit object matches
 const mapping = new Map<string, Unit[]>()
@@ -234,6 +243,7 @@ const input = ref<string>()
 const shareValue = ref<string>()
 const showShare = ref<boolean>(false)
 const textField = ref<HTMLInputElement>()
+const recentSearches = ref<string[]>([])
 
 // Read URL input if available
 let urlParams = new URLSearchParams(window.location.search)
@@ -252,6 +262,12 @@ function setInput (unit: Unit): void {
     const split = input.value.split(' ')
 
     input.value = `${split[0]} ${unit.primaryAbbreviation}`
+  }
+}
+
+function updateRecentSearches (): void {
+  if (input.value && conversionStatus.value && conversionStatus.value.converted === true) {
+    store.addRecentSearch(input.value)
   }
 }
 
@@ -502,6 +518,11 @@ const conversionStatus = computed(() => {
   } else {
     return null
   }
+})
+
+// Listen for changes to store locale and update Vuetify current
+watchEffect(() => {
+  recentSearches.value = store.recentSearches
 })
 </script>
 

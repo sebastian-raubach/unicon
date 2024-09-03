@@ -98,7 +98,7 @@ watchEffect(() => {
 function updateRectangle () {
   // Calculate the dimensions of the square by using an invisible circle
   const radius = Math.sqrt(props.squareMeters) / 2
-  if (props.latitude !== undefined && props.latitude !== null && props.longitude !== undefined && props.longitude !== null) {
+  if (props.latitude !== undefined && props.latitude !== null && props.longitude !== undefined && props.longitude !== null && props.latitude !== Infinity && props.longitude !== Infinity) {
     // Update center
     circle.setLatLng(new LatLng(props.latitude, props.longitude))
   }
