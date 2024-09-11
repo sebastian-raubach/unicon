@@ -8,6 +8,8 @@
 ![GitHub License](https://img.shields.io/github/license/sebastian-raubach/unicon?style=for-the-badge&logo=apache)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/sebastian-raubach/unicon?style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/sebastian-raubach/unicon?style=for-the-badge&logo=git)
+[![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/5216-shield.svg)](https://madewithvuejs.com/p/unicon/shield-link)
+
 
 <img src="docs/unicon-banner.png" style="max-width: 100%;" alt="UNICON running on various devices">
 
