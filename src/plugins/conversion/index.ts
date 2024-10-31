@@ -44,6 +44,9 @@ import { KilometerPerHour } from './speed/KilometerPerHour'
 import { MilePerHour } from './speed/MilePerHour'
 import { Knot } from './speed/Knot'
 import { FootPerSecond } from './speed/FootPerSecond'
+import { Pascal } from './pressure/Pascal'
+import { Bar } from './pressure/Bar'
+import { Psi } from './pressure/Psi'
 
 export {
   Ounce,
@@ -91,5 +94,8 @@ export {
   KilometerPerHour,
   MilePerHour,
   Knot,
-  FootPerSecond
+  FootPerSecond,
+  Pascal,
+  Bar,
+  Psi
 }
