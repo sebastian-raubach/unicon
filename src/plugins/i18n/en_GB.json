@@ -39,6 +39,9 @@
   "unitDistanceMile": "Miles",
   "unitDistanceNauticMile": "Nautic miles",
   "unitDistanceYard": "Yards",
+  "unitPressureBar": "Bar",
+  "unitPressurePascal": "Pascal",
+  "unitPressurePsi": "Pound per square inch (psi)",
   "unitSpeedMilePerHour": "Miles per hour (mph)",
   "unitSpeedKilometerPerHour": "Kilometres per hour (kph)",
   "unitSpeedMeterPerSecond": "Metres per second (m/s)",
@@ -73,6 +76,7 @@
   "unitTypeTime": "Time",
   "unitTypeTemperature": "Temperature",
   "unitTypeSpeed": "Speed",
+  "unitTypePressure": "Pressure",
   "themeLight": "Light",
   "themeDark": "Dark",
   "themeSystem": "System"

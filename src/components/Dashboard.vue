@@ -154,7 +154,10 @@ import {
   MilePerHour,
   Knot,
   FootPerSecond,
-  NauticMile
+  NauticMile,
+  Bar,
+  Pascal,
+  Psi
 } from '@/plugins/conversion'
 
 import TimezoneMap from '@/components/TimezoneMap.vue'
@@ -164,7 +167,7 @@ import colors from 'vuetify/util/colors'
 import { coreStore } from '@/store'
 import { ref, computed, nextTick, watchEffect } from 'vue'
 import { useLocale } from 'vuetify'
-import { mdiArrowDecision, mdiClockOutline, mdiCupWater, mdiDelete, mdiScale, mdiSelectDrag, mdiShare, mdiSpeedometer, mdiTapeMeasure, mdiThermometer } from '@mdi/js'
+import { mdiArrowDecision, mdiClockOutline, mdiCupWater, mdiDelete, mdiGauge, mdiScale, mdiSelectDrag, mdiShare, mdiSpeedometer, mdiTapeMeasure, mdiThermometer } from '@mdi/js'
 import { PotentialPart } from '@/plugins/PotentialPart'
 
 // Composition stuff
@@ -238,6 +241,9 @@ addUnit(new KilometerPerHour())
 addUnit(new MilePerHour())
 addUnit(new Knot())
 addUnit(new FootPerSecond())
+addUnit(new Bar())
+addUnit(new Pascal())
+addUnit(new Psi())
 
 // Refs
 const input = ref<string>()
@@ -403,6 +409,9 @@ const unitMenuItems = computed<UnitMenuItem[]>(() => {
         break
       case 'unitTypeTime':
         icon = mdiClockOutline
+        break
+      case 'unitTypePressure':
+        icon = mdiGauge
         break
       default:
         icon = undefined
