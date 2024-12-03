@@ -28,6 +28,7 @@
                                 @blur="updateRecentSearches"
                                 v-model="input"
                                 required
+                                autofocus
                                 ref="textField"
                                 :rules="[isValid]">
                     <template #prepend>
