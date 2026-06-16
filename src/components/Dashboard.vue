@@ -21,20 +21,22 @@
             <template #subtitle>
               <div class="text-body-large">
                 <v-form @submit.prevent validate-on="input">
-                  <v-text-field :label="t('formLabelHomeInput')"
-                                :placeholder="$t('formPlaceholderHomeInput')"
-                                :append-inner-icon="isValid(input) === true ? mdiShare : undefined"
-                                @click:append-inner="shareInput"
-                                @blur="updateRecentSearches"
-                                v-model="input"
-                                required
-                                autofocus
-                                ref="textField"
-                                :rules="[isValid]">
+                  <v-text-field
+                    :label="t('formLabelHomeInput')"
+                    :placeholder="$t('formPlaceholderHomeInput')"
+                    :append-inner-icon="isValid(input) === true ? mdiShare : undefined"
+                    @click:append-inner="shareInput"
+                    @blur="updateRecentSearches"
+                    v-model="input"
+                    required
+                    autofocus
+                    ref="textField"
+                    :rules="[isValid]"
+                  >
                     <template #prepend>
                       <UnitMenu name="Menu" :items="unitMenuItems" />
                     </template>
-                    <template #details v-if="(!input || input.length < 1) && recentSearches && recentSearches.length > 0">
+                    <template #details v-if="(!input || input.length === 0) && recentSearches && recentSearches.length > 0">
                       <div class="d-flex flex-wrap">
                         <v-chip @click="store.setRecentSearches([])" class="mt-2 mx-1" label variant="tonal"><v-icon>{{ mdiDelete }}</v-icon></v-chip>
                         <v-chip v-for="(search, index) in recentSearches" :key="`recent-search-${index}`" @click="input = search" class="mt-2 mx-1" label variant="tonal">{{ search }}</v-chip>
@@ -46,10 +48,10 @@
                     <!-- VueUse to get the geolocation -->
                     <UseGeolocation v-slot="{ error, coords: { latitude, longitude } }" v-if="conversionStatus.dataType === 'unitTypeArea' && conversionStatus.totalSi">
                       <!-- Show an area map if the input is an area unit type -->
-                      <AreaMap :latitude="latitude" :longitude="longitude" :error="error" :squareMeters="conversionStatus.totalSi" class="mb-4" />
+                      <AreaMap :latitude="latitude" :longitude="longitude" :error="error?.message" :square-meters="conversionStatus.totalSi" class="mb-4" />
                     </UseGeolocation>
                     <!-- Show a time zone map if the input is a time -->
-                    <TimezoneMap :dateConfig="conversionStatus.dateConfig" class="mt-3" v-if="conversionStatus.dateConfig" />
+                    <TimezoneMap :date-config="conversionStatus.dateConfig" class="mt-3" v-if="conversionStatus.dateConfig" />
                     <!-- Else, if something has been converted, show the result -->
                     <div class="d-flex flex-wrap conversion-gap" v-else-if="conversionStatus.converted && conversionStatus.conversions && conversionStatus.conversions.length > 0">
                       <!-- For each major unit, show a chip -->
@@ -65,12 +67,14 @@
                     </div>
                     <!-- If there's ambiguity about what unit the user wants converted, show all options -->
                     <div class="d-flex flex-wrap conversion-gap" v-else-if="!conversionStatus.converted && conversionStatus.duplicateMatches && conversionStatus.duplicateMatches.length > 0">
-                      <v-chip :color="colors.yellow.darken2"
-                              label
-                              v-for="c in conversionStatus.duplicateMatches"
-                              :key="`converted-duplicates-${c.name}`"
-                              class="wrap-chip"
-                              @click="setInput(c)">
+                      <v-chip
+                        :color="colors.yellow.darken2"
+                        label
+                        v-for="c in conversionStatus.duplicateMatches"
+                        :key="`converted-duplicates-${c.name}`"
+                        class="wrap-chip"
+                        @click="setInput(c)"
+                      >
                         <h4 class="ma-1">{{ t(c.name) }}</h4>
                       </v-chip>
                     </div>
@@ -85,7 +89,7 @@
 
     <v-dialog v-model="showShare">
       <v-card :title="t('modalTitleShare')">
-        <template v-slot:prepend>
+        <template #prepend>
           <v-icon>{{ mdiShare }}</v-icon>
         </template>
         <v-card-text>
@@ -94,7 +98,7 @@
           <v-text-field v-model="shareValue" readonly @focus="$event.target.select()" />
         </v-card-text>
 
-        <template v-slot:actions>
+        <template #actions>
           <!-- Close button -->
           <v-btn class="ms-auto" :text="t('buttonClose')" @click="showShare = false" />
         </template>
@@ -104,435 +108,433 @@
 </template>
 
 <script setup lang="ts">
-import { Unit } from '@/plugins/conversion/Unit'
-import { UseGeolocation } from '@vueuse/components'
+  import type { Unit } from '@/plugins/conversion/Unit'
+  import { UseGeolocation } from '@vueuse/components'
 
-// Import ALL the units
-import {
-  Ounce,
-  Pound,
-  Stone,
-  Milligram,
-  Gram,
-  MetricTon,
-  Kilogram,
-  Centimeter,
-  Meter,
-  Kilometer,
-  Parsec,
-  Foot,
-  Inch,
-  Yard,
-  Mile,
-  Liter,
-  CubicMeter,
-  GallonUk,
-  GallonUs,
-  PintUk,
-  PintUs,
-  Celsius,
-  Fahrenheit,
-  Kelvin,
-  Second,
-  Minute,
-  Hour,
-  Day,
-  Hectare,
-  SquareMeter,
-  Acre,
-  SquareKilometer,
-  SquareMile,
-  SquareYard,
-  SquareFoot,
-  SquareInch,
-  SquareCentimeter,
-  Millimeter,
-  LongTon,
-  ShortTon,
-  MeterPerSecond,
-  KilometerPerHour,
-  MilePerHour,
-  Knot,
-  FootPerSecond,
-  NauticMile,
-  Bar,
-  Pascal,
-  Psi
-} from '@/plugins/conversion'
+  // Import ALL the units
+  import {
+    Ounce,
+    Pound,
+    Stone,
+    Milligram,
+    Gram,
+    MetricTon,
+    Kilogram,
+    Centimeter,
+    Meter,
+    Kilometer,
+    Parsec,
+    Foot,
+    Inch,
+    Yard,
+    Mile,
+    Liter,
+    CubicMeter,
+    GallonUk,
+    GallonUs,
+    PintUk,
+    PintUs,
+    Celsius,
+    Fahrenheit,
+    Kelvin,
+    Second,
+    Minute,
+    Hour,
+    Day,
+    Hectare,
+    SquareMeter,
+    Acre,
+    SquareKilometer,
+    SquareMile,
+    SquareYard,
+    SquareFoot,
+    SquareInch,
+    SquareCentimeter,
+    Millimeter,
+    LongTon,
+    ShortTon,
+    MeterPerSecond,
+    KilometerPerHour,
+    MilePerHour,
+    Knot,
+    FootPerSecond,
+    NauticMile,
+    Bar,
+    Pascal,
+    Psi,
+  } from '@/plugins/conversion'
 
-import TimezoneMap from '@/components/TimezoneMap.vue'
-import AreaMap from '@/components/AreaMap.vue'
-import UnitMenu, { UnitMenuItem } from '@/components/UnitMenu.vue'
-import colors from 'vuetify/util/colors'
-import { coreStore } from '@/store'
-import { useLocale } from 'vuetify'
-import { mdiArrowDecision, mdiClockOutline, mdiCupWater, mdiDelete, mdiGauge, mdiScale, mdiSelectDrag, mdiShare, mdiSpeedometer, mdiTapeMeasure, mdiThermometer } from '@mdi/js'
-import { PotentialPart } from '@/plugins/PotentialPart'
+  import TimezoneMap from '@/components/TimezoneMap.vue'
+  import AreaMap from '@/components/AreaMap.vue'
+  import UnitMenu, { type UnitMenuItem } from '@/components/UnitMenu.vue'
+  import colors from 'vuetify/util/colors'
+  import { coreStore } from '@/stores/app'
+  import { useLocale } from 'vuetify'
+  import { mdiArrowDecision, mdiClockOutline, mdiCupWater, mdiDelete, mdiGauge, mdiScale, mdiSelectDrag, mdiShare, mdiSpeedometer, mdiTapeMeasure, mdiThermometer } from '@mdi/js'
+  import { PotentialPart } from '@/plugins/PotentialPart'
 
-// Composition stuff
-const { t, n } = useLocale()
-const store = coreStore()
+  // Composition stuff
+  const { t, n } = useLocale()
+  const store = coreStore()
 
-// Keep a mapping of unit abbreviations/synonyms to possible Unit object matches
-const mapping = new Map<string, Unit[]>()
-// Keep track of all Units used
-const units: Unit[] = []
-/**
- * Adds the given unit to the unit mapping for retrieval and unit list
- * @param unit The Unit object to add to the mapping and unit list
- */
-function addUnit (unit: Unit): void {
-  units.push(unit)
-  unit.abbreviations.forEach(ab => {
-    const lower = ab.toLowerCase()
-    if (mapping.has(lower)) {
-      mapping.get(lower)?.push(unit)
-    } else {
-      mapping.set(lower, [unit])
-    }
-  })
-}
-
-// Add all the units
-addUnit(new Stone())
-addUnit(new Pound())
-addUnit(new Ounce())
-addUnit(new LongTon())
-addUnit(new MetricTon())
-addUnit(new ShortTon())
-addUnit(new Kilogram())
-addUnit(new Gram())
-addUnit(new Milligram())
-addUnit(new Parsec())
-addUnit(new Kilometer())
-addUnit(new Meter())
-addUnit(new Centimeter())
-addUnit(new Millimeter())
-addUnit(new NauticMile())
-addUnit(new Mile())
-addUnit(new Yard())
-addUnit(new Foot())
-addUnit(new Inch())
-addUnit(new Liter())
-addUnit(new CubicMeter())
-addUnit(new GallonUk())
-addUnit(new GallonUs())
-addUnit(new PintUk())
-addUnit(new PintUs())
-addUnit(new Celsius())
-addUnit(new Fahrenheit())
-addUnit(new Kelvin())
-addUnit(new Day())
-addUnit(new Hour())
-addUnit(new Minute())
-addUnit(new Second())
-addUnit(new Hectare())
-addUnit(new Acre())
-addUnit(new SquareKilometer())
-addUnit(new SquareMeter())
-addUnit(new SquareCentimeter())
-addUnit(new SquareMile())
-addUnit(new SquareYard())
-addUnit(new SquareFoot())
-addUnit(new SquareInch())
-addUnit(new MeterPerSecond())
-addUnit(new KilometerPerHour())
-addUnit(new MilePerHour())
-addUnit(new Knot())
-addUnit(new FootPerSecond())
-addUnit(new Bar())
-addUnit(new Pascal())
-addUnit(new Psi())
-
-// Refs
-const input = ref<string>()
-const shareValue = ref<string>()
-const showShare = ref<boolean>(false)
-const textField = ref<HTMLInputElement>()
-const recentSearches = ref<string[]>([])
-
-// Read URL input if available
-let urlParams = new URLSearchParams(window.location.search)
-if (urlParams.has('query')) {
-  input.value = urlParams.get('query') as string
-}
-// Remove any parameters
-window.history.replaceState(null, '', window.location.pathname);
-
-/**
- * Sets the input to the given Unit. This is used for ambiguous abbreviations. Current numeric value is maintained.
- * @param unit The Unit object to set as the input unit. Will keep current input value.
- */
-function setInput (unit: Unit): void {
-  if (input.value) {
-    const split = input.value.split(' ')
-
-    input.value = `${split[0]} ${unit.primaryAbbreviation}`
-  }
-}
-
-function updateRecentSearches (): void {
-  if (input.value && conversionStatus.value && conversionStatus.value.converted === true) {
-    store.addRecentSearch(input.value)
-  }
-}
-
-/** Use Share API to share the input */
-async function shareInput (): Promise<void> {
-  if (input.value) {
-    const url = new URL(window.location.href)
-    url.searchParams.append('query', input.value)
-
-    try {
-      await navigator.share({
-        title: 'UNICON',
-        text: 'Convert anything to anything with UNICON',
-        url: url.href,
-      })
-      return
-    } catch (err) {
-      shareValue.value = url.href
-      showShare.value = true
-    }
-  }
-}
-
-/**
- * Checks whether the given number or string is actually a numeric value
- * @param value The value to check. Can be number or string
- * @returns boolean indicating whether this is a number or not
- */
-function isNumeric (value?: string | number): boolean {
-  return ((value != null) &&
-           (value !== '') &&
-           !isNaN(Number(value.toString())))
-}
-
-function getPotentialParts (parts: string[]): PotentialPart[] {
-  const result: PotentialPart[] = []
-
-  let value: number | null = null
-  let unit: string[] = []
-  for (let i = 0; i < parts.length; i++) {
-    if (isNumeric(parts[i])) {
-      if (value !== null) {
-        result.push(new PotentialPart(value, unit.join(' ')))
+  // Keep a mapping of unit abbreviations/synonyms to possible Unit object matches
+  const mapping = new Map<string, Unit[]>()
+  // Keep track of all Units used
+  const units: Unit[] = []
+  /**
+   * Adds the given unit to the unit mapping for retrieval and unit list
+   * @param unit The Unit object to add to the mapping and unit list
+   */
+  function addUnit (unit: Unit): void {
+    units.push(unit)
+    unit.abbreviations.forEach(ab => {
+      const lower = ab.toLowerCase()
+      if (mapping.has(lower)) {
+        mapping.get(lower)?.push(unit)
+      } else {
+        mapping.set(lower, [unit])
       }
-      value = +parts[i]
-      unit = []
-    } else if (value !== null) {
-      unit.push(parts[i])
+    })
+  }
+
+  // Add all the units
+  addUnit(new Stone())
+  addUnit(new Pound())
+  addUnit(new Ounce())
+  addUnit(new LongTon())
+  addUnit(new MetricTon())
+  addUnit(new ShortTon())
+  addUnit(new Kilogram())
+  addUnit(new Gram())
+  addUnit(new Milligram())
+  addUnit(new Parsec())
+  addUnit(new Kilometer())
+  addUnit(new Meter())
+  addUnit(new Centimeter())
+  addUnit(new Millimeter())
+  addUnit(new NauticMile())
+  addUnit(new Mile())
+  addUnit(new Yard())
+  addUnit(new Foot())
+  addUnit(new Inch())
+  addUnit(new Liter())
+  addUnit(new CubicMeter())
+  addUnit(new GallonUk())
+  addUnit(new GallonUs())
+  addUnit(new PintUk())
+  addUnit(new PintUs())
+  addUnit(new Celsius())
+  addUnit(new Fahrenheit())
+  addUnit(new Kelvin())
+  addUnit(new Day())
+  addUnit(new Hour())
+  addUnit(new Minute())
+  addUnit(new Second())
+  addUnit(new Hectare())
+  addUnit(new Acre())
+  addUnit(new SquareKilometer())
+  addUnit(new SquareMeter())
+  addUnit(new SquareCentimeter())
+  addUnit(new SquareMile())
+  addUnit(new SquareYard())
+  addUnit(new SquareFoot())
+  addUnit(new SquareInch())
+  addUnit(new MeterPerSecond())
+  addUnit(new KilometerPerHour())
+  addUnit(new MilePerHour())
+  addUnit(new Knot())
+  addUnit(new FootPerSecond())
+  addUnit(new Bar())
+  addUnit(new Pascal())
+  addUnit(new Psi())
+
+  // Refs
+  const input = ref<string>()
+  const shareValue = ref<string>()
+  const showShare = ref<boolean>(false)
+  const textField = ref<HTMLInputElement>()
+  const recentSearches = ref<string[]>([])
+
+  // Read URL input if available
+  const urlParams = new URLSearchParams(window.location.search)
+  if (urlParams.has('query')) {
+    input.value = urlParams.get('query') as string
+  }
+  // Remove any parameters
+  window.history.replaceState(null, '', window.location.pathname)
+
+  /**
+   * Sets the input to the given Unit. This is used for ambiguous abbreviations. Current numeric value is maintained.
+   * @param unit The Unit object to set as the input unit. Will keep current input value.
+   */
+  function setInput (unit: Unit): void {
+    if (input.value) {
+      const split = input.value.split(' ')
+
+      input.value = `${split[0]} ${unit.primaryAbbreviation}`
     }
   }
 
-  if (value !== null) {
-    result.push(new PotentialPart(value, unit.join(' ')))
+  function updateRecentSearches (): void {
+    if (input.value && conversionStatus.value && conversionStatus.value.converted === true) {
+      store.addRecentSearch(input.value)
+    }
   }
 
-  return result
-}
+  /** Use Share API to share the input */
+  async function shareInput (): Promise<void> {
+    if (input.value) {
+      const url = new URL(window.location.href)
+      url.searchParams.append('query', input.value)
 
-/**
- * Checks whether the given input is of the correct format. Needs to have a least one space and split on spaces, the first
- * part has to be a number.
- * @param value The input string to check
- * @returns Either boolean or string. If boolean, then the input is valid, if string it's the string key for i18n.
- */
-function isValid (value?: string): boolean | string {
-  if (value === undefined || value === null || value.length < 1) {
-    return ''
-  } else {
-    const parts: string[] = value.split(' ')
-
-    if (parts[0].includes(':')) {
-      return true
-    }
-    
-    const possibleParts: PotentialPart[] = getPotentialParts(parts)
-
-    if (possibleParts.length < 1) {
-      return t('formFeedbackNoValidUnitsFound')
-    } else {
-      const usedUnits: Unit[] = possibleParts.map(pp => pp.findUnit(units)).filter((u): u is Unit => !!u)
-
-      const types: Set<string> = new Set(usedUnits.map(u => u.type))
-
-      if (types.size > 1) {
-        return t('formFeedbackIncompatibleUnitTypes')
-      }
-
-      if (possibleParts.some(pp => !pp.isValid(units))) {
-        return t('formFeedbackInvalidUnitDefinition')
+      try {
+        await navigator.share({
+          title: 'UNICON',
+          text: 'Convert anything to anything with UNICON',
+          url: url.href,
+        })
+        return
+      } catch {
+        shareValue.value = url.href
+        showShare.value = true
       }
     }
   }
 
-  return true
-}
+  /**
+   * Checks whether the given number or string is actually a numeric value
+   * @param value The value to check. Can be number or string
+   * @returns boolean indicating whether this is a number or not
+   */
+  function isNumeric (value?: string | number): boolean {
+    return ((value != null) && (value !== '') && !isNaN(Number(value.toString())))
+  }
 
-const unitMenuItems = computed<UnitMenuItem[]>(() => {
-  const result: UnitMenuItem[] = []
+  function getPotentialParts (parts: string[]): PotentialPart[] {
+    const result: PotentialPart[] = []
 
-  const types: Map<string, Unit[]> = new Map<string, Unit[]>()
-
-  units.forEach(u => {
-    const type = u.type
-    if (types.has(type)) {
-      types.get(type)?.push(u)
-    } else {
-      types.set(type, [u])
-    }
-  })
-
-  types.forEach((units: Unit[], type: string) => {
-    let icon
-
-    switch (type) {
-      case 'unitTypeWeight':
-        icon = mdiScale
-        break
-      case 'unitTypeDistance':
-        icon = mdiTapeMeasure
-        break
-      case 'unitTypeVolume':
-        icon = mdiCupWater
-        break
-      case 'unitTypeTemperature':
-        icon = mdiThermometer
-        break
-      case 'unitTypeSpeed':
-        icon = mdiSpeedometer
-        break
-      case 'unitTypeArea':
-        icon = mdiSelectDrag
-        break
-      case 'unitTypeTime':
-        icon = mdiClockOutline
-        break
-      case 'unitTypePressure':
-        icon = mdiGauge
-        break
-      default:
-        icon = undefined
-    }
-
-    result.push({
-      name: type,
-      icon: icon,
-      items: units.map(u => {
-        return {
-          name: u.name,
-          isSiUnit: u.isSiUnit,
-          action: () => {
-            input.value = `1 ${u.primaryAbbreviation}`
-
-            nextTick(() => {
-              if (textField && textField.value) {
-                textField.value.focus()
-                textField.value.setSelectionRange(0, 1)
-              }
-            })
-          }
+    let value: number | null = null
+    let unit: string[] = []
+    for (let i = 0; i < parts.length; i++) {
+      if (isNumeric(parts[i])) {
+        if (value !== null) {
+          result.push(new PotentialPart(value, unit.join(' ')))
         }
-      })
+        value = +parts[i]
+        unit = []
+      } else if (value !== null) {
+        unit.push(parts[i])
+      }
+    }
+
+    if (value !== null) {
+      result.push(new PotentialPart(value, unit.join(' ')))
+    }
+
+    return result
+  }
+
+  /**
+   * Checks whether the given input is of the correct format. Needs to have a least one space and split on spaces, the first
+   * part has to be a number.
+   * @param value The input string to check
+   * @returns Either boolean or string. If boolean, then the input is valid, if string it's the string key for i18n.
+   */
+  function isValid (value?: string): boolean | string {
+    if (value === undefined || value === null || value.length === 0) {
+      return ''
+    } else {
+      const parts: string[] = value.split(' ')
+
+      if (parts[0].includes(':')) {
+        return true
+      }
+
+      const possibleParts: PotentialPart[] = getPotentialParts(parts)
+
+      if (possibleParts.length === 0) {
+        return t('formFeedbackNoValidUnitsFound')
+      } else {
+        const usedUnits: Unit[] = possibleParts.map(pp => pp.findUnit(units)).filter((u): u is Unit => !!u)
+
+        const types: Set<string> = new Set(usedUnits.map(u => u.type))
+
+        if (types.size > 1) {
+          return t('formFeedbackIncompatibleUnitTypes')
+        }
+
+        if (possibleParts.some(pp => !pp.isValid(units))) {
+          return t('formFeedbackInvalidUnitDefinition')
+        }
+      }
+    }
+
+    return true
+  }
+
+  const unitMenuItems = computed<UnitMenuItem[]>(() => {
+    const result: UnitMenuItem[] = []
+
+    const types: Map<string, Unit[]> = new Map<string, Unit[]>()
+
+    units.forEach(u => {
+      const type = u.type
+      if (types.has(type)) {
+        types.get(type)?.push(u)
+      } else {
+        types.set(type, [u])
+      }
     })
 
-    result.sort((a, b) => t(a.name).localeCompare(t(b.name)))
-  })
+    types.forEach((units: Unit[], type: string) => {
+      let icon
 
-  return result
-})
-
-const conversionStatus = computed(() => {
-  if (isValid(input.value) !== true) {
-    return null
-  }
-
-  if (input.value !== undefined && input.value !== null && input.value.length > 0) {
-    const parts: string[] = input.value.split(' ')
-
-    let dataType: string = ''
-
-    if (parts.length > 0 && (parts[0].includes(':') || (parts.length > 1 && (parts[1] === 'am' || parts[1] === 'pm')))) {
-      let [hour, minute] = parts[0].split(':').map(Number)
-
-      if (parts[1] === 'pm') {
-        hour += 12
+      switch (type) {
+        case 'unitTypeWeight':
+          icon = mdiScale
+          break
+        case 'unitTypeDistance':
+          icon = mdiTapeMeasure
+          break
+        case 'unitTypeVolume':
+          icon = mdiCupWater
+          break
+        case 'unitTypeTemperature':
+          icon = mdiThermometer
+          break
+        case 'unitTypeSpeed':
+          icon = mdiSpeedometer
+          break
+        case 'unitTypeArea':
+          icon = mdiSelectDrag
+          break
+        case 'unitTypeTime':
+          icon = mdiClockOutline
+          break
+        case 'unitTypePressure':
+          icon = mdiGauge
+          break
+        default:
+          icon = undefined
       }
 
-      return {
-        dateConfig: {
-          hour: hour,
-          minute: minute || 0,
-          tz: 'Europe/London'
-        },
-        converted: false,
-        duplicateMatches: [],
-        conversions: [],
-        dataType: 'timezone',
-        totalSi: null
-      }
-    } else {
-      const potentialParts = getPotentialParts(parts)
+      result.push({
+        name: type,
+        icon: icon,
+        items: units.map(u => {
+          return {
+            name: u.name,
+            isSiUnit: u.isSiUnit,
+            action: () => {
+              input.value = `1 ${u.primaryAbbreviation}`
 
-      let totalSi = 0
-      for (let i = 0; i < potentialParts.length; i++) {
-        const match: Unit[] | undefined = mapping.get(potentialParts[i].unit.toLowerCase())
-
-        if (match && match.length > 0) {
-          if (i === 0 && match.length > 1) {
-            return {
-              converted: false,
-              dateConfig: null,
-              duplicateMatches: match,
-              conversions: [],
-              dataType: null,
-              totalSi: null
-            }
-          } else {
-            totalSi += match[0].toSiUnit(potentialParts[i].value)
-            dataType = match[0].type
+              nextTick(() => {
+                if (textField && textField.value) {
+                  textField.value.focus()
+                  textField.value.setSelectionRange(0, 1)
+                }
+              })
+            },
           }
-        } else {
-          return null
-        }
-      }
-
-      const result: any[] = []
-
-      const others = units.filter((u: Unit) => u.type === dataType)
-
-      others.forEach(o => {
-        const value = o.fromSiUnit(totalSi)
-
-        if (value.length > 1 && value[0].conversionValue === 0) {
-          // Nothing here
-        } else {
-          result.push({
-            name: o.name,
-            value: value
-          })
-        }
+        }),
       })
 
-      return {
-        converted: true,
-        dateConfig: null,
-        duplicateMatches: [],
-        conversions: result,
-        dataType: dataType,
-        totalSi: totalSi
-      }
-    }
-  } else {
-    return null
-  }
-})
+      result.sort((a, b) => t(a.name).localeCompare(t(b.name)))
+    })
 
-// Listen for changes to store locale and update Vuetify current
-watchEffect(() => {
-  recentSearches.value = store.recentSearches
-})
+    return result
+  })
+
+  const conversionStatus = computed(() => {
+    if (isValid(input.value) !== true) {
+      return null
+    }
+
+    if (input.value !== undefined && input.value !== null && input.value.length > 0) {
+      const parts: string[] = input.value.split(' ')
+
+      let dataType = ''
+
+      if (parts.length > 0 && (parts[0].includes(':') || (parts.length > 1 && (parts[1] === 'am' || parts[1] === 'pm')))) {
+        let [hour, minute] = parts[0].split(':').map(Number)
+
+        if (parts[1] === 'pm') {
+          hour += 12
+        }
+
+        return {
+          dateConfig: {
+            hour: hour,
+            minute: minute || 0,
+            tz: 'Europe/London'
+          },
+          converted: false,
+          duplicateMatches: [],
+          conversions: [],
+          dataType: 'timezone',
+          totalSi: null
+        }
+      } else {
+        const potentialParts = getPotentialParts(parts)
+
+        let totalSi = 0
+        for (let i = 0; i < potentialParts.length; i++) {
+          const match: Unit[] | undefined = mapping.get(potentialParts[i].unit.toLowerCase())
+
+          if (match && match.length > 0) {
+            if (i === 0 && match.length > 1) {
+              return {
+                converted: false,
+                dateConfig: null,
+                duplicateMatches: match,
+                conversions: [],
+                dataType: null,
+                totalSi: null
+              }
+            } else {
+              totalSi += match[0].toSiUnit (potentialParts[i].value)
+              dataType = match[0].type
+            }
+          } else {
+            return null
+          }
+        }
+
+        const result: any[] = []
+
+        const others = units.filter((u: Unit) => u.type === dataType)
+
+        others.forEach(o => {
+          const value = o.fromSiUnit (totalSi)
+
+          if (value.length > 1 && value[0].conversionValue === 0) {
+            // Nothing here
+          } else {
+            result.push({
+              name: o.name,
+              value: value
+            })
+          }
+        })
+
+        return {
+          converted: true,
+          dateConfig: null,
+          duplicateMatches: [],
+          conversions: result,
+          dataType: dataType,
+          totalSi: totalSi
+        }
+      }
+    } else {
+      return null
+    }
+  })
+
+  // Listen for changes to store locale and update Vuetify current
+  watchEffect(() => {
+    recentSearches.value = store.recentSearches
+  })
 </script>
 
 <style scoped>

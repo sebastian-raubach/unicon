@@ -26,10 +26,10 @@ const i18n = createI18n({
   fallbackLocale: 'en',
   messages: {
     en: enGB,
-    de: deDE
+    de: deDE,
   },
   legacy: false,
-  globalInjection: true
+  globalInjection: true,
 })
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
@@ -38,8 +38,8 @@ const vuetify = createVuetify({
     defaultSet: 'mdi',
     aliases,
     sets: {
-      mdi
-    }
+      mdi,
+    },
   },
   defaults: {
     VBtn: {
@@ -63,25 +63,25 @@ const vuetify = createVuetify({
       light: {
         dark: false,
         colors: {
-          primary: '#c66268',
-          background: '#ffede0'
-        }
+          primary: '#af5b65',
+          background: '#ffede0',
+        },
       },
       dark: {
         dark: true,
         colors: {
           primary: '#ff7373',
-          background: '#00121f'
-        }
-      }
-    }
+          background: '#00121f',
+        },
+      },
+    },
   },
   locale: {
-    adapter: createVueI18nAdapter({ i18n, useI18n })
-  }
+    adapter: createVueI18nAdapter({ i18n, useI18n }),
+  },
 })
 
 export {
   vuetify,
-  i18n
-} 
+  i18n,
+}

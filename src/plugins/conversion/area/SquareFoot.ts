@@ -1,16 +1,17 @@
-import { ConversionResult } from '../ConversionResult'
-import { AreaUnit } from '../AreaUnit'
-import { SquareInch } from './SquareInch'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { AreaUnit } from '@/plugins/conversion/AreaUnit'
+import { SquareInch } from '@/plugins/conversion/area/SquareInch'
 
 export class SquareFoot extends AreaUnit {
-  constructor() {
+  constructor () {
     super('unitAreaSquareFoot', 'ft2', ['ft2', 'square ft', 'square foot', 'square feet', 'quadratfuß', 'quadratfüße'], false, new SquareInch())
   }
 
-  toSiUnit(value: number): number {
+  toSiUnit (value: number): number {
     return value / 10.7639104167
   }
-  fromSiUnit(value: number): ConversionResult[] {
+
+  fromSiUnit (value: number): ConversionResult[] {
     return this.adjustSubUnits(value, value * 10.7639104167)
   }
 }

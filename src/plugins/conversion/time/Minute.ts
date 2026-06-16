@@ -1,16 +1,17 @@
-import { ConversionResult } from '../ConversionResult'
-import { TimeUnit } from '../TimeUnit'
-import { Second } from './Second'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { TimeUnit } from '@/plugins/conversion/TimeUnit'
+import { Second } from '@/plugins/conversion/time/Second'
 
 export class Minute extends TimeUnit {
-  constructor() {
+  constructor () {
     super('unitTimeMinute', 'min', ['min', 'minute', 'minutes', 'minuten'], false, new Second())
   }
 
-  toSiUnit(value: number): number {
+  toSiUnit (value: number): number {
     return value * 60
   }
-  fromSiUnit(value: number): ConversionResult[] {
+
+  fromSiUnit (value: number): ConversionResult[] {
     return this.adjustSubUnits(value, value / 60)
   }
 }

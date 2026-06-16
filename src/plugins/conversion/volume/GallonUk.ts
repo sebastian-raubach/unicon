@@ -1,15 +1,16 @@
-import { ConversionResult } from '../ConversionResult'
-import { VolumeUnit } from '../VolumeUnit'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { VolumeUnit } from '@/plugins/conversion/VolumeUnit'
 
 export class GallonUk extends VolumeUnit {
-  constructor() {
+  constructor () {
     super('unitVolumeGallonUk', 'gal UK', ['gal', 'gal UK', 'gal (UK)', 'gallon', 'gallons', 'gallone', 'gallonen'], false)
   }
 
-  toSiUnit(value: number): number {
+  toSiUnit (value: number): number {
     return value / 219.9692482991
   }
-  fromSiUnit(value: number): ConversionResult[] {
+
+  fromSiUnit (value: number): ConversionResult[] {
     return this.adjustSubUnits(value, value * 219.9692482991)
   }
 }

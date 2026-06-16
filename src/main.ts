@@ -16,13 +16,13 @@ import App from './App.vue'
 import { createApp } from 'vue'
 
 const updateSW = registerSW({
-  onNeedRefresh() {
+  onNeedRefresh () {
     console.log('onNeedRefresh')
     document.dispatchEvent(
-      new CustomEvent('swUpdated', { detail: updateSW })
+      new CustomEvent('swUpdated', { detail: updateSW }),
     )
   },
-  onOfflineReady() {
+  onOfflineReady () {
     console.log('onOfflineReady')
   },
 })

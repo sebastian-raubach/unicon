@@ -1,15 +1,16 @@
-import { ConversionResult } from '../ConversionResult'
-import { PressureUnit } from '../PressureUnit'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { PressureUnit } from '@/plugins/conversion/PressureUnit'
 
 export class Bar extends PressureUnit {
-  constructor() {
+  constructor () {
     super('unitPressureBar', 'bar', ['bar'], false)
   }
 
-  toSiUnit(value: number): number {
-    return value * 100000
+  toSiUnit (value: number): number {
+    return value * 100_000
   }
-  fromSiUnit(value: number): ConversionResult[] {
-    return this.adjustSubUnits(value, value / 100000)
+
+  fromSiUnit (value: number): ConversionResult[] {
+    return this.adjustSubUnits(value, value / 100_000)
   }
 }

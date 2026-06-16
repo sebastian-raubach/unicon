@@ -1,15 +1,16 @@
-import { ConversionResult } from '../ConversionResult'
-import { SpeedUnit } from '../SpeedUnit'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { SpeedUnit } from '@/plugins/conversion/SpeedUnit'
 
 export class FootPerSecond extends SpeedUnit {
-  constructor() {
+  constructor () {
     super('unitSpeedFootPerSecond', 'ft/s', ['ft/s', 'fps', 'foot/second', 'foot per second', 'fuß/sekunde', 'fuß pro sekunde'], false)
   }
 
-  toSiUnit(value: number): number {
+  toSiUnit (value: number): number {
     return value / 3.280839895
   }
-  fromSiUnit(value: number): ConversionResult[] {
+
+  fromSiUnit (value: number): ConversionResult[] {
     return this.adjustSubUnits(value, value * 3.280839895)
   }
 }

@@ -5,7 +5,7 @@
  */
 
 // Plugins
-import { vuetify, i18n } from './vuetify'
+import { vuetify, i18n } from '@/plugins/vuetify'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 

@@ -1,15 +1,16 @@
-import { ConversionResult } from '../ConversionResult'
-import { WeightUnit } from '../WeightUnit'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { WeightUnit } from '@/plugins/conversion/WeightUnit'
 
 export class Ounce extends WeightUnit {
-  constructor() {
+  constructor () {
     super('unitWeightOunce', 'oz', ['oz', 'ounce', 'ounces', 'unze', 'unzen'], false)
   }
 
-  toSiUnit(value: number): number {
+  toSiUnit (value: number): number {
     return value / 35.2739619496
   }
-  fromSiUnit(value: number): ConversionResult[] {
+
+  fromSiUnit (value: number): ConversionResult[] {
     return this.adjustSubUnits(value, value * 35.2739619496)
   }
 }

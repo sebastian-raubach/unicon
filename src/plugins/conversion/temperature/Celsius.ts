@@ -1,15 +1,16 @@
-import { ConversionResult } from '../ConversionResult'
-import { TemperatureUnit } from '../TemperatureUnit'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { TemperatureUnit } from '@/plugins/conversion/TemperatureUnit'
 
 export class Celsius extends TemperatureUnit {
-  constructor() {
+  constructor () {
     super('unitTemperatureCelsius', 'c', ['c', 'celsius', '°c'], false)
   }
 
-  toSiUnit(value: number): number {
+  toSiUnit (value: number): number {
     return value + 273.15
   }
-  fromSiUnit(value: number): ConversionResult[] {
+
+  fromSiUnit (value: number): ConversionResult[] {
     return this.adjustSubUnits(value, value - 273.15)
   }
 }

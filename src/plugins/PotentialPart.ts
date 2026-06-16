@@ -1,4 +1,4 @@
-import { Unit } from "./conversion/Unit"
+import type { Unit } from '@/plugins/conversion/Unit'
 
 export class PotentialPart {
   value: number

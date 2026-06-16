@@ -1,15 +1,16 @@
-import { ConversionResult } from '../ConversionResult'
-import { WeightUnit } from '../WeightUnit'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { WeightUnit } from '@/plugins/conversion/WeightUnit'
 
 export class Milligram extends WeightUnit {
-  constructor() {
+  constructor () {
     super('unitWeightMilligram', 'mg', ['mg', 'milligram', 'milligrams', 'gramm', 'milligramm'], false)
   }
 
-  toSiUnit(value: number): number {
-    return value / 1000000.0
+  toSiUnit (value: number): number {
+    return value / 1_000_000
   }
-  fromSiUnit(value: number): ConversionResult[] {
-    return this.adjustSubUnits(value, value * 1000000.0)
+
+  fromSiUnit (value: number): ConversionResult[] {
+    return this.adjustSubUnits(value, value * 1_000_000)
   }
 }

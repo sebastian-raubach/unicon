@@ -7,7 +7,7 @@ export const coreStore = defineStore('uniconCore', {
       theme: 'light',
       locale: 'en' as string,
       darkMode: null as (boolean | null),
-      recentSearches: [] as string[]
+      recentSearches: [] as string[],
     }
   },
   getters: {
@@ -45,9 +45,9 @@ export const coreStore = defineStore('uniconCore', {
     },
     setRecentSearches (recentSearches: string[]) {
       this.recentSearches = recentSearches
-    }
+    },
   },
   persist: {
-    key: 'unicon'
-  }
+    key: 'unicon',
+  },
 })

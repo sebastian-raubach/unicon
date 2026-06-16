@@ -1,15 +1,16 @@
-import { ConversionResult } from '../ConversionResult'
-import { PressureUnit } from '../PressureUnit'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { PressureUnit } from '@/plugins/conversion/PressureUnit'
 
 export class Pascal extends PressureUnit {
-  constructor() {
+  constructor () {
     super('unitPressurePascal', 'pa', ['pa', 'pascal'], true)
   }
 
-  toSiUnit(value: number): number {
+  toSiUnit (value: number): number {
     return value
   }
-  fromSiUnit(value: number): ConversionResult[] {
+
+  fromSiUnit (value: number): ConversionResult[] {
     return this.adjustSubUnits(value, value)
   }
 }

@@ -23,33 +23,33 @@
 </template>
 
 <script setup lang="ts">
-import { mdiMenuDown } from '@mdi/js'
-import { useLocale } from 'vuetify'
-// Composition stuff
-const { t } = useLocale()
+  import { mdiMenuDown } from '@mdi/js'
+  import { useLocale } from 'vuetify'
+  // Composition stuff
+  const { t } = useLocale()
 
-const menu = ref(false)
+  const menu = ref(false)
 
-export interface UnitMenuItem {
-  name: string,
-  icon?: string,
-  isSiUnit?: boolean,
-  action?: Function,
-  items?: UnitMenuItem[]
-}
-
-export interface UnitMenuProps {
-  name: string,
-  icon?: string,
-  items: UnitMenuItem[]
-}
-
-const thisProps = defineProps<UnitMenuProps>()
-
-function callItem (item: UnitMenuItem) {
-  if (item.action) {
-    item.action()
+  export interface UnitMenuItem {
+    name: string,
+    icon?: string,
+    isSiUnit?: boolean,
+    action?: Function,
+    items?: UnitMenuItem[]
   }
-  menu.value = false
-}
+
+  export interface UnitMenuProps {
+    name: string,
+    icon?: string,
+    items: UnitMenuItem[]
+  }
+
+  const thisProps = defineProps<UnitMenuProps>()
+
+  function callItem (item: UnitMenuItem) {
+    if (item.action) {
+      item.action()
+    }
+    menu.value = false
+  }
 </script>

@@ -1,15 +1,16 @@
-import { ConversionResult } from '../ConversionResult'
-import { VolumeUnit } from '../VolumeUnit'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { VolumeUnit } from '@/plugins/conversion/VolumeUnit'
 
 export class PintUs extends VolumeUnit {
-  constructor() {
+  constructor () {
     super('unitVolumePintUs', 'pt US', ['pint', 'pt', 'pt US', 'pt (US)', 'pint US', 'pint (US)', 'pints'], false)
   }
 
-  toSiUnit(value: number): number {
+  toSiUnit (value: number): number {
     return value / 2113.3764188652
   }
-  fromSiUnit(value: number): ConversionResult[] {
+
+  fromSiUnit (value: number): ConversionResult[] {
     return this.adjustSubUnits(value, value * 2113.3764188652)
   }
 }

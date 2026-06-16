@@ -1,15 +1,16 @@
-import { ConversionResult } from '../ConversionResult'
-import { SpeedUnit } from '../SpeedUnit'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { SpeedUnit } from '@/plugins/conversion/SpeedUnit'
 
 export class Knot extends SpeedUnit {
-  constructor() {
+  constructor () {
     super('unitSpeedKnot', 'kn', ['kn', 'kt', 'knot', 'knots', 'knoten'], false)
   }
 
-  toSiUnit(value: number): number {
+  toSiUnit (value: number): number {
     return value / 1.9438444924
   }
-  fromSiUnit(value: number): ConversionResult[] {
+
+  fromSiUnit (value: number): ConversionResult[] {
     return this.adjustSubUnits(value, value * 1.9438444924)
   }
 }

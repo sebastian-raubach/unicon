@@ -1,15 +1,16 @@
-import { ConversionResult } from '../ConversionResult'
-import { DistanceUnit } from '../DistanceUnit'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { DistanceUnit } from '@/plugins/conversion/DistanceUnit'
 
 export class NauticMile extends DistanceUnit {
-  constructor() {
+  constructor () {
     super('unitDistanceNauticMile', 'nm', ['nm', 'nautic mile', 'nautic miles', 'seemeile', 'seemeilen'], false)
   }
 
-  toSiUnit(value: number): number {
+  toSiUnit (value: number): number {
     return value * 1852
   }
-  fromSiUnit(value: number): ConversionResult[] {
+
+  fromSiUnit (value: number): ConversionResult[] {
     return this.adjustSubUnits(value, value / 1852)
   }
 }

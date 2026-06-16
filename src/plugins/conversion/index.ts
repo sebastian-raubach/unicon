@@ -1,101 +1,49 @@
-import { Ounce } from './weight/Ounce'
-import { Pound } from './weight/Pound'
-import { Stone } from './weight/Stone'
-import { Milligram } from './weight/Milligram'
-import { Gram } from './weight/Gram'
-import { MetricTon } from './weight/MetricTon'
-import { ShortTon } from './weight/ShortTon'
-import { LongTon } from './weight/LongTon'
-import { Kilogram } from './weight/Kilogram'
-import { Millimeter } from './distance/Millimeter'
-import { Centimeter } from './distance/Centimeter'
-import { Meter } from './distance/Meter'
-import { Kilometer } from './distance/Kilometer'
-import { Parsec } from './distance/Parsec'
-import { Foot } from './distance/Foot'
-import { Inch } from './distance/Inch'
-import { Yard } from './distance/Yard'
-import { Mile } from './distance/Mile'
-import { NauticMile } from './distance/NauticMile'
-import { Liter } from './volume/Liter'
-import { CubicMeter } from './volume/CubicMeter'
-import { GallonUk } from './volume/GallonUk'
-import { GallonUs } from './volume/GallonUs'
-import { PintUk } from './volume/PintUk'
-import { PintUs } from './volume/PintUs'
-import { Celsius } from './temperature/Celsius'
-import { Fahrenheit } from './temperature/Fahrenheit'
-import { Kelvin } from './temperature/Kelvin'
-import { Second } from './time/Second'
-import { Minute } from './time/Minute'
-import { Hour } from './time/Hour'
-import { Day } from './time/Day'
-import { Hectare } from './area/Hectare'
-import { SquareMeter } from './area/SquareMeter'
-import { Acre } from './area/Acre'
-import { SquareKilometer } from './area/SquareKilometer'
-import { SquareCentimeter } from './area/SquareCentimeter'
-import { SquareMile } from './area/SquareMile'
-import { SquareYard } from './area/SquareYard'
-import { SquareFoot } from './area/SquareFoot'
-import { SquareInch } from './area/SquareInch'
-import { MeterPerSecond } from './speed/MeterPerSecond'
-import { KilometerPerHour } from './speed/KilometerPerHour'
-import { MilePerHour } from './speed/MilePerHour'
-import { Knot } from './speed/Knot'
-import { FootPerSecond } from './speed/FootPerSecond'
-import { Pascal } from './pressure/Pascal'
-import { Bar } from './pressure/Bar'
-import { Psi } from './pressure/Psi'
-
-export {
-  Ounce,
-  Pound,
-  Stone,
-  Milligram,
-  Gram,
-  MetricTon,
-  ShortTon,
-  LongTon,
-  Kilogram,
-  Millimeter,
-  Centimeter,
-  Meter,
-  Kilometer,
-  Parsec,
-  Foot,
-  Inch,
-  Yard,
-  Mile,
-  NauticMile,
-  Liter,
-  CubicMeter,
-  GallonUk,
-  GallonUs,
-  PintUk,
-  PintUs,
-  Celsius,
-  Fahrenheit,
-  Kelvin,
-  Second,
-  Minute,
-  Hour,
-  Day,
-  Hectare,
-  SquareMeter,
-  Acre,
-  SquareKilometer,
-  SquareCentimeter,
-  SquareMile,
-  SquareYard,
-  SquareFoot,
-  SquareInch,
-  MeterPerSecond,
-  KilometerPerHour,
-  MilePerHour,
-  Knot,
-  FootPerSecond,
-  Pascal,
-  Bar,
-  Psi
-}
+export { Ounce } from '@/plugins/conversion/weight/Ounce'
+export { Pound } from '@/plugins/conversion/weight/Pound'
+export { Stone } from '@/plugins/conversion/weight/Stone'
+export { Milligram } from '@/plugins/conversion/weight/Milligram'
+export { Gram } from '@/plugins/conversion/weight/Gram'
+export { MetricTon } from '@/plugins/conversion/weight/MetricTon'
+export { ShortTon } from '@/plugins/conversion/weight/ShortTon'
+export { LongTon } from '@/plugins/conversion/weight/LongTon'
+export { Kilogram } from '@/plugins/conversion/weight/Kilogram'
+export { Millimeter } from '@/plugins/conversion/distance/Millimeter'
+export { Centimeter } from '@/plugins/conversion/distance/Centimeter'
+export { Meter } from '@/plugins/conversion/distance/Meter'
+export { Kilometer } from '@/plugins/conversion/distance/Kilometer'
+export { Parsec } from '@/plugins/conversion/distance/Parsec'
+export { Foot } from '@/plugins/conversion/distance/Foot'
+export { Inch } from '@/plugins/conversion/distance/Inch'
+export { Yard } from '@/plugins/conversion/distance/Yard'
+export { Mile } from '@/plugins/conversion/distance/Mile'
+export { NauticMile } from '@/plugins/conversion/distance/NauticMile'
+export { Liter } from '@/plugins/conversion/volume/Liter'
+export { CubicMeter } from '@/plugins/conversion/volume/CubicMeter'
+export { GallonUk } from '@/plugins/conversion/volume/GallonUk'
+export { GallonUs } from '@/plugins/conversion/volume/GallonUs'
+export { PintUk } from '@/plugins/conversion/volume/PintUk'
+export { PintUs } from '@/plugins/conversion/volume/PintUs'
+export { Celsius } from '@/plugins/conversion/temperature/Celsius'
+export { Fahrenheit } from '@/plugins/conversion/temperature/Fahrenheit'
+export { Kelvin } from '@/plugins/conversion/temperature/Kelvin'
+export { Second } from '@/plugins/conversion/time/Second'
+export { Minute } from '@/plugins/conversion/time/Minute'
+export { Hour } from '@/plugins/conversion/time/Hour'
+export { Day } from '@/plugins/conversion/time/Day'
+export { Hectare } from '@/plugins/conversion/area/Hectare'
+export { SquareMeter } from '@/plugins/conversion/area/SquareMeter'
+export { Acre } from '@/plugins/conversion/area/Acre'
+export { SquareKilometer } from '@/plugins/conversion/area/SquareKilometer'
+export { SquareCentimeter } from '@/plugins/conversion/area/SquareCentimeter'
+export { SquareMile } from '@/plugins/conversion/area/SquareMile'
+export { SquareYard } from '@/plugins/conversion/area/SquareYard'
+export { SquareFoot } from '@/plugins/conversion/area/SquareFoot'
+export { SquareInch } from '@/plugins/conversion/area/SquareInch'
+export { MeterPerSecond } from '@/plugins/conversion/speed/MeterPerSecond'
+export { KilometerPerHour } from '@/plugins/conversion/speed/KilometerPerHour'
+export { MilePerHour } from '@/plugins/conversion/speed/MilePerHour'
+export { Knot } from '@/plugins/conversion/speed/Knot'
+export { FootPerSecond } from '@/plugins/conversion/speed/FootPerSecond'
+export { Pascal } from '@/plugins/conversion/pressure/Pascal'
+export { Bar } from '@/plugins/conversion/pressure/Bar'
+export { Psi } from '@/plugins/conversion/pressure/Psi'

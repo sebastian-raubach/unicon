@@ -1,15 +1,16 @@
-import { ConversionResult } from '../ConversionResult'
-import { TemperatureUnit } from '../TemperatureUnit'
+import type { ConversionResult } from '@/plugins/conversion/ConversionResult'
+import { TemperatureUnit } from '@/plugins/conversion/TemperatureUnit'
 
 export class Kelvin extends TemperatureUnit {
-  constructor() {
+  constructor () {
     super('unitTemperatureKelvin', 'k', ['k', 'kelvin'], true)
   }
 
-  toSiUnit(value: number): number {
+  toSiUnit (value: number): number {
     return value
   }
-  fromSiUnit(value: number): ConversionResult[] {
+
+  fromSiUnit (value: number): ConversionResult[] {
     return this.adjustSubUnits(value, value)
   }
 }
