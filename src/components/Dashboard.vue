@@ -1,6 +1,6 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="align-centerfill-height mx-auto" width="min(100%, 900px)">
+  <v-container class="fill-height d-flex align-center justify-center">
+    <v-responsive class="align-centerfill-height mx-auto flex-grow-0" width="min(100%, 900px)">
       <v-img class="mb-4" height="150" id="logo" src="@/assets/logo.svg" />
 
       <div class="text-center">
