@@ -7,7 +7,6 @@ import timezones from '@/assets/timezones.json'
 import { DateTime } from 'luxon'
 import { coreStore } from '@/store'
 
-import { ref, onMounted, watch, watchEffect } from 'vue'
 import L, { Layer, TileLayer } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useTheme, useLocale } from 'vuetify'
@@ -37,7 +36,6 @@ const props = defineProps<{
 
 // Refs
 const mapElement = ref('')
-const systemTheme = ref('dark')
 
 // Composition stuff
 const store = coreStore()
@@ -48,17 +46,16 @@ const primary = theme.current.value.colors.primary
 let geoJsonLayer: L.GeoJSON
 let themeLayer: TileLayer
 
-let media: MediaQueryList
 function initMap () {
   const map = L.map(mapElement.value)
 
   map.setView([22.5937, 2.1094], 3)
 
-  const theme = store.theme === 'system' ? systemTheme.value : store.theme
-  themeLayer = L.tileLayer(`//services.arcgisonline.com/arcgis/rest/services/Canvas/${theme === 'dark' ? 'World_Dark_Gray_Base' : 'World_Light_Gray_Base'}/MapServer/tile/{z}/{y}/{x}`, {
-    id: theme === 'dark' ? 'Esri Dark Gray Base' : 'Esri Light Gray Base',
+  themeLayer = L.tileLayer(`//services.arcgisonline.com/arcgis/rest/services/Canvas/${store.storeIsDarkMode ? 'World_Dark_Gray_Base' : 'World_Light_Gray_Base'}/MapServer/tile/{z}/{y}/{x}`, {
+    id: store.storeIsDarkMode ? 'Esri Dark Gray Base' : 'Esri Light Gray Base',
     attribution: 'Esri, HERE, Garmin, FAO, NOAA, USGS, © OpenStreetMap contributors, and the GIS User Community',
     maxZoom: 21,
+    minZoom: 1,
     maxNativeZoom: 15
   })
 
@@ -118,24 +115,10 @@ function initMap () {
   map.on('blur', () => map.scrollWheelZoom.disable())
 }
 
-watch(() => store.theme, (value: string) => {
-  if (value === 'system') {
-    media = window.matchMedia('(prefers-color-scheme: dark)')
-    media.addEventListener('change', onThemeChange)
-    onThemeChange()
-  } else if (media) {
-    media.removeEventListener('change', onThemeChange)
-  }
-}, { immediate: true })
-function onThemeChange () {
-  systemTheme.value = media!.matches ? 'dark' : 'light'
-}
-watchEffect(() => {
-  const theme = store.theme === 'system' ? systemTheme.value : store.theme
-
+watch(() => store.storeIsDarkMode, async newValue => {
   // Update the tile layer
   if (themeLayer && themeLayer) {
-    themeLayer.setUrl(`//services.arcgisonline.com/arcgis/rest/services/Canvas/${theme === 'dark' ? 'World_Dark_Gray_Base' : 'World_Light_Gray_Base'}/MapServer/tile/{z}/{y}/{x}`)
+    themeLayer.setUrl(`//services.arcgisonline.com/arcgis/rest/services/Canvas/${newValue ? 'World_Dark_Gray_Base' : 'World_Light_Gray_Base'}/MapServer/tile/{z}/{y}/{x}`)
   }
 })
 

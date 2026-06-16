@@ -3,14 +3,32 @@ import { defineStore } from 'pinia'
 export const coreStore = defineStore('uniconCore', {
   state: () => {
     return {
-      theme: 'system' as string,
+      systemTheme: 'dark',
+      theme: 'light',
       locale: 'en' as string,
+      darkMode: null as (boolean | null),
       recentSearches: [] as string[]
     }
   },
+  getters: {
+    storeDarkMode: (state): boolean | null => state.darkMode,
+    storeTheme: (state): string => state.theme,
+    storeIsDarkMode: (state): boolean => (state.theme === 'system' ? state.systemTheme : state.theme) === 'dark',
+    storeSystemTheme: (state): string => state.systemTheme || 'dark',
+  },
   actions: {
+    setSystemTheme (newSystemTheme: string) {
+      this.systemTheme = newSystemTheme
+    },
     setTheme (newTheme: string) {
       this.theme = newTheme
+
+      if (newTheme !== 'system') {
+        this.setDarkMode(newTheme === 'dark')
+      }
+    },
+    setDarkMode (newDarkMode: boolean) {
+      this.darkMode = newDarkMode
     },
     setLocale (newLocale: string) {
       this.locale = newLocale

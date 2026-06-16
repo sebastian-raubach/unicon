@@ -1,12 +1,12 @@
 <template>
   <v-container class="fill-height">
-    <v-responsive class="align-centerfill-height mx-auto" max-width="min(100%, 900px)">
-      <v-img class="mb-4" height="150" src="@/assets/logo.svg" />
+    <v-responsive class="align-centerfill-height mx-auto" width="min(100%, 900px)">
+      <v-img class="mb-4" height="150" id="logo" src="@/assets/logo.svg" />
 
       <div class="text-center">
-        <div class="text-body-2 font-weight-light mb-n1">{{ t('pageHomeLogoWelcome') }}</div>
-        <h1 class="text-h2 font-weight-bold title">UNI</h1>
-        <h1 class="text-h2 font-weight-bold title text-rotated">CON</h1>
+        <div class="text-body-medium font-weight-light mb-n1">{{ t('pageHomeLogoWelcome') }}</div>
+        <h1 class="text-display-large font-weight-bold title ma-0">UNI</h1>
+        <h1 class="text-display-large font-weight-bold title ma-0 text-rotated">CON</h1>
       </div>
 
       <div class="py-4" />
@@ -15,11 +15,11 @@
         <v-col cols="12">
           <v-card class="py-4" color="surface-variant" rounded="lg" variant="outlined">
             <template #title>
-              <h2 class="text-h5 mb-3 font-weight-bold"><v-icon>{{ mdiArrowDecision }}</v-icon> {{ t('pageHomeCardTitle') }}</h2>
+              <h2 class="text-headline-small mb-3 font-weight-bold"><v-icon>{{ mdiArrowDecision }}</v-icon> {{ t('pageHomeCardTitle') }}</h2>
             </template>
 
             <template #subtitle>
-              <div class="text-subtitle-1">
+              <div class="text-body-large">
                 <v-form @submit.prevent validate-on="input">
                   <v-text-field :label="t('formLabelHomeInput')"
                                 :placeholder="$t('formPlaceholderHomeInput')"
@@ -57,8 +57,8 @@
                         <div class="d-flex flex-wrap conversion-gap">
                           <!-- Within each major unit show all sub-divisions -->
                           <div v-for="sub in c.value" :key="`converted-sub-${c.name}-${sub.unitName}`">
-                            <h4>{{ t(sub.unitName) }}</h4>
-                            <p>{{ n(sub.conversionValue) }}</p>
+                            <h4 class="mt-1 mb-0">{{ t(sub.unitName) }}</h4>
+                            <p class="mt-1 mb-1">{{ n(sub.conversionValue) }}</p>
                           </div>
                         </div>
                       </v-chip>
@@ -71,7 +71,7 @@
                               :key="`converted-duplicates-${c.name}`"
                               class="wrap-chip"
                               @click="setInput(c)">
-                        <h4>{{ t(c.name) }}</h4>
+                        <h4 class="ma-1">{{ t(c.name) }}</h4>
                       </v-chip>
                     </div>
                   </template>
@@ -165,7 +165,6 @@ import AreaMap from '@/components/AreaMap.vue'
 import UnitMenu, { UnitMenuItem } from '@/components/UnitMenu.vue'
 import colors from 'vuetify/util/colors'
 import { coreStore } from '@/store'
-import { ref, computed, nextTick, watchEffect } from 'vue'
 import { useLocale } from 'vuetify'
 import { mdiArrowDecision, mdiClockOutline, mdiCupWater, mdiDelete, mdiGauge, mdiScale, mdiSelectDrag, mdiShare, mdiSpeedometer, mdiTapeMeasure, mdiThermometer } from '@mdi/js'
 import { PotentialPart } from '@/plugins/PotentialPart'

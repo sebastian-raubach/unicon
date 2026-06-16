@@ -1,4 +1,5 @@
 // Plugins
+import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import Vue from '@vitejs/plugin-vue'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
@@ -19,6 +20,19 @@ export default defineConfig({
     // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
     Vuetify(),
     Components(),
+    AutoImport({
+      imports: [
+        'vue',
+        {
+          pinia: ['defineStore', 'storeToRefs'],
+        },
+      ],
+      dts: 'src/auto-imports.d.ts',
+      eslintrc: {
+        enabled: true,
+      },
+      vueTemplate: true,
+    }),
     VitePWA({
       workbox: {
         cleanupOutdatedCaches: true,
@@ -59,10 +73,19 @@ export default defineConfig({
       },
     }),
   ],
+  optimizeDeps: {
+    exclude: [
+      'vuetify',
+      'vue-router',
+      'unplugin-vue-router/runtime',
+      'unplugin-vue-router/data-loaders',
+      'unplugin-vue-router/data-loaders/basic',
+    ],
+  },
   define: { 'process.env': {} },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@': fileURLToPath(new URL('src', import.meta.url)),
     },
     extensions: [
       '.js',

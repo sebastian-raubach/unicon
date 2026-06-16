@@ -24,7 +24,6 @@
 
 <script setup lang="ts">
 import { mdiMenuDown } from '@mdi/js'
-import { ref } from 'vue'
 import { useLocale } from 'vuetify'
 // Composition stuff
 const { t } = useLocale()

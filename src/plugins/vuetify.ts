@@ -41,8 +41,24 @@ const vuetify = createVuetify({
       mdi
     }
   },
+  defaults: {
+    VBtn: {
+      class: 'text-uppercase',
+      // or if you are using $utilities: false
+      style: 'text-transform: uppercase;',
+    },
+  },
+  display: {
+    thresholds: {
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+      xxl: 2560,
+    },
+  },
   theme: {
     defaultTheme: 'dark',
+    transition: true,
     themes: {
       light: {
         dark: false,
